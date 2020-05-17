@@ -3,7 +3,7 @@ import { Building } from 'src/types/api';
 import { Map } from 'src/components/map';
 import { updateRooms } from 'src/ducks/building-page/actions';
 import { Box, FloorsBox, FloorItem } from './styles';
-import { type } from 'os';
+// import { Places } from 'src/components/places';
 
 type PropsType = {
     building: Building;
@@ -58,7 +58,6 @@ export class BuildingPageView extends Component<PropsType, StateType> {
     renderMap() {
         const { building, currentFloor } = this.props;
         const { height, width } = this.state;
-        console.log('qwer', height, width);
 
         if (!height || !width) {
             return null;

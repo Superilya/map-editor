@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Konva from 'konva';
-import { Room, Area } from 'src/types/api';
-import { Stage, Layer, Rect, Shape, KonvaNodeEvents, Line } from 'react-konva';
+import { ReactReduxContext, Provider } from "react-redux";
+import { Room } from 'src/types/api';
+import { Stage, Layer, Rect, KonvaNodeEvents } from 'react-konva';
 import { KonvaEventObject } from 'konva/types/Node';
-import { BorderKinds } from 'src/constants/kinds';
+
+import { Area } from 'src/components/area';
+import { Places } from 'src/components/places';
 
 type PropsType = {
     width: number;
@@ -13,21 +16,6 @@ type PropsType = {
     mapWidth: number;
     mapHeight: number;
 }
-
-const renderArea = (area: Area) => (context, shape) => {
-    context.beginPath();
-
-    const [ first, ...borders ] = area.borders;
-    context.moveTo(first.x, first.y);
-
-    for (const targetBoder of borders) {
-        context.lineTo(targetBoder.x, targetBoder.y);
-    }
-
-    context.closePath();
-    // (!) Konva specific method, it is very important
-    context.fillStrokeShape(shape);
-};
 
 const getInitialScale = (
     screenWidth: number,
@@ -42,35 +30,12 @@ const getInitialScale = (
     const widthScale = screenWidth / mapWidth;
     const heightScale = screenHeight / mapHeight;
 
-    console.log(widthScale, heightScale);
     return Math.min(widthScale, heightScale) - 0.04;
 }
 
 // const getOffset = (screenSize: number, mapSize: number): number => {
 //     return Math.floor((screenSize / 2) - (mapSize / 2));
 // };
-
-const renderBorders = (area: Area) => {
-    const [firstBorder, ...other] = area.borders;
-
-    if (!firstBorder) {
-        return null;
-    }
-
-    const result: JSX.Element[] = [];
-
-    other.reduce((prev, next) => {
-        if (next.kind !== BorderKinds.TRANSPARENT) {
-            result.push(
-                <Line points={[prev.x, prev.y, next.x, next.y]} stroke="black" strokeWidth={4} />
-            );
-        }
-
-        return next;
-    }, firstBorder);
-
-    return result;
-}
 
 export class MapView extends Component<PropsType> {
     private scaleBy = 1.03;
@@ -140,39 +105,34 @@ export class MapView extends Component<PropsType> {
         }
 
         return (
-            <Stage
-                offset={{ x: -200, y: -50 }}
-                width={width}
-                height={height}
-                draggable
-                scale={{ x: this.scale, y: this.scale }}
-                onWheel={this.handleWheel}>
-                <Layer>
-                    <Rect
-                        x={ 0 }
-                        y={ 0 }
-                        width={ mapWidth }
-                        height={ mapHeight }
-                        fill="#00FF00"
-                    />
-                </Layer>
-                {rooms.map((room: Room) => (
-                    <Layer
-                        x={ room.x }
-                        y={ room.y }
-                    >
-                        <Shape
-                            key={room.id}
-                            sceneFunc={renderArea(room.area)}
-                            fill="#e7cbfc"
-                            strokeWidth={4}
-                            onClick={this.handleClickRoom}
-                            name={String(room.id)}
-                        />
-                        {renderBorders(room.area)}
-                    </Layer>
-                ))}
-            </Stage>
+            <ReactReduxContext.Consumer>
+                {({ store }) => (
+                    <Stage
+                        offset={{ x: -200, y: -50 }}
+                        width={width}
+                        height={height}
+                        draggable
+                        scale={{ x: this.scale, y: this.scale }}
+                        onWheel={this.handleWheel}>
+                        <Provider store={store}>
+                            {rooms.map((room: Room) => (
+                                <Layer
+                                    x={ room.x }
+                                    y={ room.y }
+                                    key={room.id}
+                                >
+                                    <Area
+                                        area={room.area}
+                                        onClick={this.handleClickRoom}
+                                        name={room.id}
+                                    />
+                                    <Places roomId={ room.id } />
+                                </Layer>
+                            ))}
+                        </Provider>
+                    </Stage>
+                )}
+            </ReactReduxContext.Consumer>
         )
     }
 }

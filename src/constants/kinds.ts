@@ -1,5 +1,6 @@
 export enum AreaKinds {
-    DEFAULT = 0
+    DEFAULT = 0,
+    PLACE = 1
 }
 
 export enum BorderKinds {

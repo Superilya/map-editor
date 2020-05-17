@@ -4,7 +4,8 @@ export enum Users {
 
 export enum Map {
     BUILDINGS = '/api/map/buildings',
-    ROOMS = '/api/map/rooms'
+    ROOMS = '/api/map/rooms',
+    PLACES = '/api/map/places'
 }
 
 export enum Auth {

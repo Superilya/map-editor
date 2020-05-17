@@ -44,8 +44,20 @@ export type Area = {
     borders: Array<Border>;
 }
 
+export type Place = {
+    id: number;
+    userId: User['id'];
+    x: number;
+    y: number;
+    area: Area;
+}
+
+export type PlaceResponse = {
+    places: Array<Place>
+}
+
 export type Room = {
-    id: string;
+    id: number;
     x: number;
     y: number;
     parentId: Room['id'];
@@ -58,7 +70,7 @@ export type RoomsResponse = {
     rooms: Array<Room>
 }
 
-type CommonResponses = UserResponse | BuildingResponse | RoomsResponse;
+type CommonResponses = UserResponse | BuildingResponse | RoomsResponse | PlaceResponse;
 
 export type Response<T extends CommonResponses> = T & {
     status: ServerStatuses;
