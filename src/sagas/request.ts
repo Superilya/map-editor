@@ -22,7 +22,6 @@ export  function* request <T>(method: keyof typeof requestUtil, params: requestU
             ...params, headers: { uuid }
         }));
     } catch (exception) {
-        console.log('exception', exception);
         if (
             exception instanceof CustomError && exception.isAuthError() ||
             Array.isArray(exception.errors) && exception.errors.includes(Errors.UNAUTHORIZED)

@@ -17,7 +17,12 @@ export const getLocationChange = function* (action: LocationChangeAction) {
         if (match && match.isExact) {
             if (Array.isArray(route.init)) {
                 for (const initSaga of route.init) {
-                    yield call(initSaga, qs.parse(action.payload.location.search, { ignoreQueryPrefix: true }) as QueryType, match.params, action.payload.isFirstRendering);
+                    yield call(
+                        initSaga,
+                        qs.parse(action.payload.location.search, { ignoreQueryPrefix: true }) as QueryType,
+                        match.params,
+                        action.payload.isFirstRendering
+                    );
                 }
             }
 

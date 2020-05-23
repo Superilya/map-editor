@@ -1,10 +1,15 @@
-type AuthSuccessPageQuery = {
+export type AuthSuccessPageQuery = {
     uuid?: string;
 }
 
-type BuildingPageParams = {
-    buildingId?: string;
+export type BuildingPageQuery = {
+    place?: string;
 }
 
-export type QueryType = AuthSuccessPageQuery;
+export type BuildingPageParams = {
+    buildingId?: string;
+    floor?: string;
+}
+
+export type QueryType = AuthSuccessPageQuery & BuildingPageQuery;
 export type ParamsType = BuildingPageParams;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Konva from 'konva';
 import { ReactReduxContext, Provider } from "react-redux";
-import { Room } from 'src/types/api';
-import { Stage, Layer, Rect, KonvaNodeEvents } from 'react-konva';
+import { Room, Place } from 'src/types/api';
+import { Stage, Layer, KonvaNodeEvents, Group } from 'react-konva';
 import { KonvaEventObject } from 'konva/types/Node';
 
 import { Area } from 'src/components/area';
@@ -15,6 +15,8 @@ type PropsType = {
     isRoomsLoading: boolean;
     mapWidth: number;
     mapHeight: number;
+    selectedPlace?: Place['id'];
+    onClickPlace?: (evt: KonvaEventObject<MouseEvent>, place: Place) => void
 }
 
 const getInitialScale = (
@@ -98,7 +100,14 @@ export class MapView extends Component<PropsType> {
     }
 
     render() {
-        const { rooms, isRoomsLoading, width, height, mapWidth, mapHeight } = this.props;
+        const {
+            rooms,
+            isRoomsLoading,
+            width,
+            height,
+            onClickPlace,
+            selectedPlace
+        } = this.props;
 
         if (isRoomsLoading || !width || !height) {
             return null;
@@ -114,22 +123,28 @@ export class MapView extends Component<PropsType> {
                         draggable
                         scale={{ x: this.scale, y: this.scale }}
                         onWheel={this.handleWheel}>
-                        <Provider store={store}>
-                            {rooms.map((room: Room) => (
-                                <Layer
-                                    x={ room.x }
-                                    y={ room.y }
-                                    key={room.id}
-                                >
-                                    <Area
-                                        area={room.area}
-                                        onClick={this.handleClickRoom}
-                                        name={room.id}
-                                    />
-                                    <Places roomId={ room.id } />
-                                </Layer>
-                            ))}
-                        </Provider>
+                        <Layer>
+                            <Provider store={store}>
+                                {rooms.map((room: Room) => (
+                                    <Group
+                                        x={ room.x }
+                                        y={ room.y }
+                                        key={room.id}
+                                    >
+                                        <Area
+                                            area={room.area}
+                                            onClick={this.handleClickRoom}
+                                            name={room.id}
+                                        />
+                                        <Places
+                                            selectedPlace={selectedPlace}
+                                            roomId={ room.id }
+                                            onClickPlace={onClickPlace}
+                                        />
+                                    </Group>
+                                ))}
+                            </Provider>
+                        </Layer>
                     </Stage>
                 )}
             </ReactReduxContext.Consumer>

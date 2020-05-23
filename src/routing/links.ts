@@ -1,8 +1,23 @@
 import { match, compile } from 'path-to-regexp';
+import { BuildingPageParams, ParamsType, QueryType, BuildingPageQuery } from 'src/types/routing';
+import qs from 'qs';
 
-export type InternalLink = {
+const assemblePath = <Q extends QueryType = {}>(url: string, query?: Q) => {
+    const targetQuery = qs.stringify(query);
+
+    if (!targetQuery) {
+        return url;
+    }
+
+    return `${url}?${targetQuery}`;
+};
+
+export type InternalLink<
+    P extends ParamsType = {},
+    Q extends QueryType = {}
+> = {
     source: string;
-    get: (params?: object) => string;
+    get: (params?: P, query?: Q) => string;
     is: (target: string) => boolean;
 }
 
@@ -22,12 +37,12 @@ export const authSuccess: InternalLink = {
     is: (target) => target === AUTH_SUCCESS
 };
 
-const BUILDING = '/building/:buildingId';
+const BUILDING = '/building/:buildingId/:floor?';
 const buildingCompile = compile(BUILDING);
 const buildingMatch = match(BUILDING);
 
-export const buildingLink: InternalLink = {
+export const buildingLink: InternalLink<BuildingPageParams, BuildingPageQuery> = {
     source: BUILDING,
-    get: (params) => buildingCompile(params),
+    get: (params, query) => assemblePath(buildingCompile(params), query),
     is: (target) => Boolean(buildingMatch(target))
 };

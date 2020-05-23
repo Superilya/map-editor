@@ -18,6 +18,14 @@ export const entity = (state = initialState, action: ActionTypes): StateType => 
             };
         }
 
+        case UsersActionType.GET_USERS_SUCCESS: {
+            return action.users.reduce((acc, user) => {
+                acc[user.id] = user;
+
+                return acc;
+            }, { ...state });
+        }
+
         default: {
             return state;
         }

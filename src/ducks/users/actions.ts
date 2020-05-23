@@ -13,3 +13,16 @@ export const getSelfSuccess = (user: User) => ({
 export const getSelfFailed = () => ({
     type: UsersActionType.GET_SELF_FAILED
 });
+
+export const getUsers = () => ({
+    type: UsersActionType.GET_USERS,
+});
+
+export const getUsersSuccess = (users: Array<User>) => ({
+    type: UsersActionType.GET_USERS_SUCCESS,
+    users
+});
+
+export const getUsersFailed = () => ({
+    type: UsersActionType.GET_USERS_FAILED
+});

@@ -2,6 +2,7 @@ import React, { Component, ReactNode, MouseEvent } from 'react';
 import { User, Building } from 'src/types/api';
 import { goToPage } from 'src/ducks/app/actions';
 import { buildingLink, rootLink } from 'src/routing/links';
+import { getDefaultFloor } from 'src/utils/building';
 
 import {
     MenuBox,
@@ -69,6 +70,7 @@ export class LayoutView extends Component<PropsType> {
                                         <SubItem 
                                             onClick={this.handleClickBuilding}
                                             data-building-id={building.id}
+                                            data-floor={getDefaultFloor(building)}
                                             key={building.id}
                                         >
                                             {building.name}

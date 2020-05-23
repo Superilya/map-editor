@@ -1,10 +1,10 @@
 import { call, put, StrictEffect } from 'redux-saga/effects';
-import { QueryType, ParamsType } from 'src/types/routing';
+import { ParamsType, QueryType, AuthSuccessPageQuery } from 'src/types/routing';
 import { auth } from 'src/utils/auth';
 import { replace } from 'connected-react-router';
 import { rootLink } from 'src/routing/links';
 
-export const initAuthSuccess = function* (query: QueryType, params: ParamsType): Generator<StrictEffect, void, any> {
+export const initAuthSuccess = function* (query: AuthSuccessPageQuery, params: ParamsType): Generator<StrictEffect, void, any> {
     if (!query.uuid) {
         return;
     }

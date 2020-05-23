@@ -12,7 +12,7 @@ import { initAuthSuccess } from 'src/sagas/init/auth-success';
 import { initBuilding } from 'src/sagas/init/building';
 
 import { StrictEffect } from 'redux-saga/effects';
-import { QueryType, ParamsType } from 'src/types/routing';
+import { ParamsType, QueryType } from 'src/types/routing';
 
 export type TRoute = RouteProps & {
     key: string;

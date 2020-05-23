@@ -1,15 +1,19 @@
-import React, { Component, createRef, RefObject, MouseEvent } from 'react';
-import { Building } from 'src/types/api';
+import React, { Component, createRef, RefObject } from 'react';
+import { Building, Place } from 'src/types/api';
 import { Map } from 'src/components/map';
-import { updateRooms } from 'src/ducks/building-page/actions';
+import { Tool } from 'src/components/tool';
+import { goToPage } from 'src/ducks/app/actions';
 import { Box, FloorsBox, FloorItem } from './styles';
+import { buildingLink } from 'src/routing/links';
+import { KonvaEventObject } from 'konva/types/Node';
 // import { Places } from 'src/components/places';
 
 type PropsType = {
     building: Building;
     isBuildingsLoading: boolean;
     currentFloor: Building['floors'][0] | null;
-    updateRooms: typeof updateRooms
+    selectedPlace?: Place['id'];
+    goToPage: typeof goToPage;
 }
 
 type StateType = {
@@ -44,19 +48,31 @@ export class BuildingPageView extends Component<PropsType, StateType> {
         }
     }
 
-    handleClickFloor = (e: MouseEvent<HTMLDivElement>) => {
-        const floor = Number(e.currentTarget.dataset.floor);
-        const { updateRooms, building } = this.props;
+    handleClickFloor = (e: React.MouseEvent<HTMLDivElement>) => {
+        const floor = e.currentTarget.dataset.floor;
+        const { goToPage, building } = this.props;
 
-        if (Number.isNaN(floor)) {
-            return null;
+        goToPage(buildingLink.get({ buildingId: String(building.id), floor }));
+    }
+
+    handleClickPlace = (evt: KonvaEventObject<MouseEvent>, place: Place) => {
+        const { building, currentFloor, goToPage, selectedPlace } = this.props;
+
+        if (place.id === selectedPlace) {
+            goToPage(buildingLink.get({
+                buildingId: String(building.id),
+                floor: String(currentFloor)
+            }));            
+        } else {
+            goToPage(buildingLink.get(
+                { buildingId: String(building.id), floor: String(currentFloor) },
+                { place: String(place.id) }
+            ));
         }
-
-        updateRooms(building.id, floor);
     }
 
     renderMap() {
-        const { building, currentFloor } = this.props;
+        const { building, currentFloor, selectedPlace } = this.props;
         const { height, width } = this.state;
 
         if (!height || !width) {
@@ -65,6 +81,8 @@ export class BuildingPageView extends Component<PropsType, StateType> {
 
         return (
             <Map
+                onClickPlace={this.handleClickPlace}
+                selectedPlace={selectedPlace}
                 key={`${building.id}-${currentFloor}`}
                 width={width}
                 height={height}
@@ -83,6 +101,7 @@ export class BuildingPageView extends Component<PropsType, StateType> {
 
         return (
             <Box ref={ this.box }>
+                <Tool />
                 <FloorsBox>
                     {building.floors.map((floor) => (
                         <FloorItem

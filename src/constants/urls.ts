@@ -1,5 +1,6 @@
 export enum Users {
-    SELF = '/api/users/self'
+    SELF = '/api/users/self',
+    LIST = '/api/users/list'
 }
 
 export enum Map {

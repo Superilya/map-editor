@@ -1,6 +1,6 @@
 import React from 'react';
 import { Area as AreaType } from 'src/types/api';
-import { Shape, KonvaNodeEvents, Path } from 'react-konva';
+import { Shape, KonvaNodeEvents, Path, Group } from 'react-konva';
 import { AreaKinds, BorderKinds } from 'src/constants/kinds';
 
 const renderArea = (area: AreaType) => (context, shape) => {
@@ -45,7 +45,7 @@ const renderPath = (prev, next) => (context, shape) => {
     context.fillStrokeShape(shape);
 }
 
-const renderBorders = (area: AreaType, x?: number, y?: number) => {
+const renderBorders = (area: AreaType, x?: number, y?: number, rotation?: number) => {
     const [firstBorder, ...other] = area.borders;
 
     if (!firstBorder) {
@@ -57,7 +57,15 @@ const renderBorders = (area: AreaType, x?: number, y?: number) => {
     other.reduce((prev, next) => {
         if (next.kind !== BorderKinds.TRANSPARENT) {
             result.push(
-                <Path x={x} y={y} data='qwer' sceneFunc={renderPath(prev, next)} stroke="black" strokeWidth={4} />
+                <Path
+                    x={x}
+                    y={y}
+                    data='qwer'
+                    sceneFunc={renderPath(prev, next)}
+                    stroke="black"
+                    strokeWidth={4}
+                    rotation={rotation}
+                />
                 // <Line x={x} y={y} points={[prev.x, prev.y, next.x, next.y]} stroke="black" strokeWidth={4} />
             );
         }
@@ -75,7 +83,7 @@ const getFill = (kind: AreaKinds) => {
         }
 
         case AreaKinds.PLACE: {
-            return '#00FF00';
+            return '#FF0000';
         }
     }
 }
@@ -86,20 +94,22 @@ type PropsType = {
     onClick?: KonvaNodeEvents['onClick'];
     x?: number;
     y?: number;
+    rotation?: number;
+    fill?: string;
 }
 
-export const Area = ({ area, onClick, name, x, y }: PropsType) => {
+export const Area = ({ area, onClick, name, x, y, rotation, fill }: PropsType) => {
     return (
-        <>
+        <Group rotation={rotation}>
             <Shape
                 x={x}
                 y={y}
                 sceneFunc={renderArea(area)}
-                fill={getFill(area.kind)}
+                fill={fill || getFill(area.kind)}
                 onClick={onClick}
                 name={String(name)}
             />
             {renderBorders(area, x, y)}
-        </>
+        </Group>
     )
 }

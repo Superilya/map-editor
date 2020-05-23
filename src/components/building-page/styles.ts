@@ -5,6 +5,10 @@ export const Box = styled.div`
     position: relative;
 `;
 
+export const MapBox = styled.div`
+    height: 100%:
+`;
+
 export const FloorsBox = styled.div`
     margin: 10px;
     position: absolute;

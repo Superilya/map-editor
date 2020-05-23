@@ -50,6 +50,7 @@ export type Place = {
     x: number;
     y: number;
     area: Area;
+    rotation?: number;
 }
 
 export type PlaceResponse = {
