@@ -10,7 +10,8 @@ const mapStateToProps = (state: RootStoreType, props: RouteComponentProps<Buildi
     const query: BuildingPageQuery = qs.parse(props.location.search, { ignoreQueryPrefix: true });
 
     return {
-        place: query.place ? state.places.entity[Number(query.place)] : undefined
+        place: query.place ? state.places.entity[Number(query.place)] : undefined,
+        room: query.room ? state.rooms.entity[Number(query.room)] : undefined
     };
 };
 

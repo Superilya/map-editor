@@ -38,7 +38,7 @@ export class PlacesView extends Component<PropsType> {
       >
         <Area
           fill={selectedPlace === place.id ? '#0000FF' : undefined}
-          name={place.id}
+          name={String(place.id)}
           area={place.area}
           rotation={place.rotation}
         />

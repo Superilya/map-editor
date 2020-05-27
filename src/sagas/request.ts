@@ -34,12 +34,11 @@ export function* request<T>(
       (Array.isArray(exception.errors) &&
         exception.errors.includes(Errors.UNAUTHORIZED))
     ) {
-      yield call(
-        () =>
-          (window.location.href = `${Auth.UI}?${qs.stringify({
-            returnUrl: `${CONTEXT_ROOT}${authSuccess.get()}`,
-          })}`)
-      )
+      yield call((): void => {
+        window.location.href = `${Auth.UI}?${qs.stringify({
+          returnUrl: `${CONTEXT_ROOT}${authSuccess.get()}`,
+        })}`
+      })
     }
 
     throw exception

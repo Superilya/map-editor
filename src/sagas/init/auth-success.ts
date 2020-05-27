@@ -1,5 +1,5 @@
 import { call, put, StrictEffect } from 'redux-saga/effects';
-import { ParamsType, QueryType, AuthSuccessPageQuery } from 'src/types/routing';
+import { ParamsType, AuthSuccessPageQuery } from 'src/types/routing';
 import { auth } from 'src/utils/auth';
 import { replace } from 'connected-react-router';
 import { rootLink } from 'src/routing/links';
