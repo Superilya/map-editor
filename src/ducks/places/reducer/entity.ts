@@ -11,6 +11,7 @@ export const initialState: StateType = {};
 
 export const entity = (state = initialState, action: ActionTypes): StateType => {
     switch (action.type) {
+        case PlacesActionType.CHANGE_MY_PLACE_SUCCESS:
         case PlacesActionType.GET_PLACES_SUCCESS: {
             return action.places.reduce((acc, place) => {
                 acc[place.id] = place;

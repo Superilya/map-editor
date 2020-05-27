@@ -15,3 +15,17 @@ export const getPlacesSuccess = (roomId: Room['id'], places: Array<Place>) => ({
 export const getPlacesFailed = () => ({
     type: PlacesActionType.GET_PLACES_FAILED
 });
+
+export const changeMyPlace = (targetPlaceId: Place['id']) => ({
+    type: PlacesActionType.CHANGE_MY_PLACE,
+    targetPlaceId
+});
+
+export const changeMyPlaceSuccess = (places: Array<Place>) => ({
+    type: PlacesActionType.CHANGE_MY_PLACE_SUCCESS,
+    places
+});
+
+export const changeMyPlaceFailed = () => ({
+    type: PlacesActionType.CHANGE_MY_PLACE_FAILED
+});
