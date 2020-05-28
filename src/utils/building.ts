@@ -1,3 +1,3 @@
-import { Building } from "src/types/api";
+import { Building } from 'src/types/api'
 
-export const getDefaultFloor = (building: Building) => building.floors[0];
+export const getDefaultFloor = (building: Building) => building.floors[0]
