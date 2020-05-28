@@ -1,4 +1,4 @@
 export enum ServerStatuses {
-    OK = 'ok',
-    ERROR = 'error'
+  OK = 'ok',
+  ERROR = 'error',
 }

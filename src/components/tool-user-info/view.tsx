@@ -1,18 +1,14 @@
-import React from 'react';
-import { User } from 'src/types/api';
+import React from 'react'
+import { User } from 'src/types/api'
 
 type PropsType = {
-    user: User
+  user: User
 }
 
 export const ToolUserInfoView = ({ user }: PropsType) => {
-    if (!user) {
-        return null;
-    }
+  if (!user) {
+    return null
+  }
 
-    return (
-        <div>
-            {user.name}
-        </div>
-    );
+  return <div>{user.name}</div>
 }
