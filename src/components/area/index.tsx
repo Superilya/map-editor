@@ -1,6 +1,6 @@
 import React from 'react'
 import { Area as AreaType } from 'src/types/api'
-import { Shape, KonvaNodeEvents, Path, Group } from 'react-konva'
+import { Shape, KonvaNodeEvents, Path, Group, StageProps } from 'react-konva'
 import { AreaKinds, BorderKinds } from 'src/constants/kinds'
 
 const renderArea = (area: AreaType) => (context, shape) => {
@@ -90,36 +90,30 @@ const getFill = (kind: AreaKinds) => {
     case AreaKinds.PLACE: {
       return '#FF0000'
     }
+
+    default: {
+      return undefined
+    }
   }
 }
 
-type PropsType = {
+type PropsType = StageProps & {
   area: AreaType
   name: string | number
   onClick?: KonvaNodeEvents['onClick']
   x?: number
   y?: number
-  rotation?: number
   fill?: string
 }
 
-export const Area = ({
-  area,
-  onClick,
-  name,
-  x,
-  y,
-  rotation,
-  fill,
-}: PropsType) => {
+export const Area = ({ area, name, x, y, fill, ...other }: PropsType) => {
   return (
-    <Group rotation={rotation}>
+    <Group {...other}>
       <Shape
         x={x}
         y={y}
         sceneFunc={renderArea(area)}
         fill={fill || getFill(area.kind)}
-        onClick={onClick}
         name={String(name)}
       />
       {renderBorders(area, x, y)}

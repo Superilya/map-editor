@@ -44,7 +44,6 @@ export const postForm = responseWrap(
 
     if (data) {
       targetBody = Object.keys(data).reduce((acc, field) => {
-        // @ts-ignore: Unreachable code error
         const value = data[field]
         const targetAcc = acc === '' ? '' : `${acc}&`
 

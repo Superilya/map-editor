@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, Group, Circle, StageProps } from 'react-konva'
+import { Image, StageProps } from 'react-konva'
 
 type PropsType = StageProps & {
   src: string
@@ -19,7 +19,9 @@ export class MapUrlImage extends Component<PropsType, StateType> {
   }
 
   componentDidUpdate(oldProps: PropsType) {
-    if (oldProps.src !== this.props.src) {
+    const { src } = this.props
+
+    if (oldProps.src !== src) {
       this.loadImage()
     }
   }
@@ -28,13 +30,6 @@ export class MapUrlImage extends Component<PropsType, StateType> {
     if (this.image) {
       this.image.removeEventListener('load', this.handleLoad)
     }
-  }
-
-  loadImage() {
-    // save to "this" to remove "load" handler on unmount
-    this.image = new window.Image()
-    this.image.src = this.props.src
-    this.image.addEventListener('load', this.handleLoad)
   }
 
   handleLoad = () => {
@@ -48,13 +43,22 @@ export class MapUrlImage extends Component<PropsType, StateType> {
     // this.imageNode.getLayer().batchDraw();
   }
 
+  loadImage() {
+    // save to "this" to remove "load" handler on unmount
+    const { src } = this.props
+
+    this.image = new window.Image()
+    this.image.src = src
+    this.image.addEventListener('load', this.handleLoad)
+  }
+
   render() {
-    const { src, ...other } = this.props
+    const { image } = this.state
 
     return (
       <Image
-        {...other}
-        image={this.state.image}
+        {...this.props}
+        image={image}
         // ref={node => {
         //     this.imageNode = node;
         // }}

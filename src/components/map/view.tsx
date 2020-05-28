@@ -16,7 +16,9 @@ type PropsType = {
   mapWidth: number
   mapHeight: number
   selectedPlace?: Place['id']
+  selectedRoom?: Room['id']
   onClickPlace?: (evt: KonvaEventObject<MouseEvent>, place: Place) => void
+  onClickRoom?: (evt: KonvaEventObject<MouseEvent>, room: Room) => void
 }
 
 const getInitialScale = (
@@ -61,6 +63,15 @@ export class MapView extends Component<PropsType> {
   //     }, 2000);
   // }
 
+  handleClickRoom: KonvaNodeEvents['onClick'] = (e) => {
+    const { onClickRoom } = this.props
+    const room = e.currentTarget.attrs.room as Room
+
+    if (typeof onClickRoom === 'function') {
+      onClickRoom(e, room)
+    }
+  }
+
   handleWheel = (e: KonvaEventObject<WheelEvent>) => {
     e.evt.preventDefault()
     const stage = e.currentTarget as Konva.Stage
@@ -92,13 +103,6 @@ export class MapView extends Component<PropsType> {
     stage.batchDraw()
   }
 
-  handleClickRoom: KonvaNodeEvents['onClick'] = (e) => {
-    // console.log(e.currentTarget.name());
-    const qwe = e.currentTarget.getStage()?.getPointerPosition()
-
-    console.log('qwer', qwe)
-  }
-
   render() {
     const {
       rooms,
@@ -107,6 +111,7 @@ export class MapView extends Component<PropsType> {
       height,
       onClickPlace,
       selectedPlace,
+      selectedRoom,
     } = this.props
 
     if (isRoomsLoading || !width || !height) {
@@ -131,7 +136,9 @@ export class MapView extends Component<PropsType> {
                     <Area
                       area={room.area}
                       onClick={this.handleClickRoom}
-                      name={room.id}
+                      name={String(room.id)}
+                      room={room}
+                      fill={selectedRoom === room.id ? '#00FF00' : undefined}
                     />
                     <Places
                       selectedPlace={selectedPlace}

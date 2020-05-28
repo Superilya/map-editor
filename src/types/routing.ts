@@ -4,6 +4,7 @@ export type AuthSuccessPageQuery = {
 
 export type BuildingPageQuery = {
   place?: string
+  room?: string
 }
 
 export type BuildingPageParams = {

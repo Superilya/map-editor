@@ -1,6 +1,6 @@
 import React, { Component, ReactNode, MouseEvent } from 'react'
 import { User, Building } from 'src/types/api'
-import { goToPage } from 'src/ducks/app/actions'
+import { goToPage as goToPageAction } from 'src/ducks/app/actions'
 import { buildingLink, rootLink } from 'src/routing/links'
 import { getDefaultFloor } from 'src/utils/building'
 
@@ -20,7 +20,7 @@ export type PropsType = {
   buildings: Array<Building>
   selfUser: User
   children: ReactNode
-  goToPage: typeof goToPage
+  goToPage: typeof goToPageAction
 }
 
 export class LayoutView extends Component<PropsType> {
@@ -37,11 +37,15 @@ export class LayoutView extends Component<PropsType> {
   }
 
   handleClickMain = () => {
-    this.props.goToPage(rootLink.get())
+    const { goToPage } = this.props
+
+    goToPage(rootLink.get())
   }
 
   handleClickBuilding = (e: MouseEvent<HTMLDivElement>) => {
-    this.props.goToPage(buildingLink.get(e.currentTarget.dataset))
+    const { goToPage } = this.props
+
+    goToPage(buildingLink.get(e.currentTarget.dataset))
   }
 
   render() {

@@ -15,7 +15,8 @@ const mapStateToProps = (state: RootStoreType, props: RouteComponentProps<Buildi
         building: selectTargetBuilding(Number(props.match.params.buildingId))(state),
         isBuildingsLoading: selectIsBuildingsLoading(state),
         currentFloor: Number(props.match.params.floor),
-        selectedPlace: query.place ? Number(query.place) : undefined
+        selectedPlace: query.place ? Number(query.place) : undefined,
+        selectedRoom: query.room ? Number(query.room) : undefined
     };
 };
 

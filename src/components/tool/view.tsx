@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import { Place } from 'src/types/api'
+import { Place, Room } from 'src/types/api'
 import { ToolUserInfo } from 'src/components/tool-user-info'
-import { changeMyPlace } from 'src/ducks/places/actions'
+import { ToolRoomInfo } from 'src/components/tool-room-info'
+import { changeMyPlace as changeMyPlaceAction } from 'src/ducks/places/actions'
 import { Box } from './styles'
 
 type PropsType = {
   place?: Place
-  changeMyPlace: typeof changeMyPlace
+  room?: Room
+  changeMyPlace: typeof changeMyPlaceAction
 }
 
 export class ToolView extends Component<PropsType> {
@@ -20,18 +22,41 @@ export class ToolView extends Component<PropsType> {
     changeMyPlace(place.id)
   }
 
-  render() {
-    const { place } = this.props
+  renderContent() {
+    const { place, room } = this.props
 
-    if (!place) {
+    if (place) {
+      return (
+        <>
+          <ToolUserInfo userId={place.userId} />
+          <button onClick={this.handleClick} type="button">
+            Я теперь сижу тут
+          </button>
+        </>
+      )
+    }
+
+    if (room) {
+      return (
+        <>
+          <ToolRoomInfo room={room} />
+          <button onClick={this.handleClick} type="button">
+            Редактировать
+          </button>
+        </>
+      )
+    }
+
+    return null
+  }
+
+  render() {
+    const { place, room } = this.props
+
+    if (!place && !room) {
       return null
     }
 
-    return (
-      <Box>
-        <ToolUserInfo userId={place.userId} />
-        <button onClick={this.handleClick}>Я теперь сижу тут</button>
-      </Box>
-    )
+    return <Box>{this.renderContent()}</Box>
   }
 }
