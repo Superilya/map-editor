@@ -17,7 +17,7 @@ export type TRoute = RouteProps & {
       query: QueryType,
       params: ParamsType,
       isFirstRendering: boolean
-    ) => Generator<StrictEffect, void, any>
+    ) => Generator<StrictEffect, void, void>
   >
 }
 
