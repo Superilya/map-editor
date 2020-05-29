@@ -42,12 +42,20 @@ export class BuildingPageView extends Component<PropsType, StateType> {
     const { width, height } = this.state
 
     if (
-      width != this.box.current?.clientWidth ||
-      height != this.box.current?.clientHeight
+      !this.box.current ||
+      !this.box.current.clientWidth ||
+      !this.box.current.clientHeight
+    ) {
+      return
+    }
+
+    if (
+      width !== this.box.current.clientWidth ||
+      height !== this.box.current.clientHeight
     ) {
       this.setState({
-        width: this.box.current?.clientWidth || null,
-        height: this.box.current?.clientHeight || null,
+        width: this.box.current.clientWidth || null,
+        height: this.box.current.clientHeight || null,
       })
     }
   }

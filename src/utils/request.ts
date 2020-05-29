@@ -36,6 +36,7 @@ const responseWrap = (request: (params: RequestType) => Promise<Response>) => <
 export interface RequestType extends RequestInit {
   url: string
   data?: object
+  headers?: Record<string, string>
 }
 
 export const postForm = responseWrap(

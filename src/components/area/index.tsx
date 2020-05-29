@@ -63,6 +63,7 @@ const renderBorders = (
     if (next.kind !== BorderKinds.TRANSPARENT) {
       result.push(
         <Path
+          key={next.id}
           x={x}
           y={y}
           data="qwer"
