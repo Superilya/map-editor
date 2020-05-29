@@ -1,29 +1,35 @@
 import React from 'react'
 import Autosuggest from 'react-autosuggest'
+import { auth } from 'src/utils/auth'
+import { get } from 'src/utils/request'
+import { UserResponse, User } from 'src/types/api'
 
 type PropsType = {}
+type StateType = {
+  value?: string
+  suggestions: []
+}
 
-const users = [
-  {
-    name: 'Vasya',
-    year: 1972,
-  },
-  {
-    name: 'Pupok',
-    year: 2012,
-  },
-]
+const getSuggestions = async (value: string) => {
+  const inputValue = value.trim().toLowerCase()
+  const inputLength = inputValue.length
 
-const getSuggestions = value => {
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
+  const response = await get({
+    url: '/api/users/search',
+    data: {
+      q: value,
+    },
+    headers: {
+      uuid: auth.uuid || '',
+    }
+  })
 
-  return inputLength === 0 ? [] : users.filter(user =>
+  return inputLength === 0 ? [] : response.users.filter((user: User) =>
     user.name.toLowerCase().slice(0, inputLength) === inputValue
   )
 }
 
-const getSuggestionValue = suggestion => suggestion.name;
+const getSuggestionValue = suggestion => suggestion.name
 
 const renderSuggestion = suggestion => (
   <div>
@@ -31,10 +37,10 @@ const renderSuggestion = suggestion => (
   </div>
 )
 
-export class Search extends React.Component<PropsType> {
+export class Search extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props)
-
+    
     this.state = {
       value: '',
       suggestions: [],
@@ -47,9 +53,9 @@ export class Search extends React.Component<PropsType> {
     })
   }
 
-  onSuggestionsFetchRequested = ({ value }) => {
+  onSuggestionsFetchRequested = async ({ value }) => {
     this.setState({
-      suggestions: getSuggestions(value),
+      suggestions: await getSuggestions(value),
     })
   }
 
@@ -63,7 +69,7 @@ export class Search extends React.Component<PropsType> {
     const { value, suggestions } = this.state
 
     const inputProps = {
-      placeholder: 'Type a programming language',
+      placeholder: 'Искать',
       value,
       onChange: this.onChange,
     }
