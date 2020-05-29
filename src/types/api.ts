@@ -30,6 +30,7 @@ export type BuildingResponse = {
 }
 
 export type Border = {
+  id: number
   x: number
   y: number
   cp1x: number | null

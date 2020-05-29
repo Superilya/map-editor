@@ -1,4 +1,4 @@
-import { call, CallEffect } from 'redux-saga/effects'
+import { call } from 'redux-saga/effects'
 import * as requestUtil from 'src/utils/request'
 import { auth } from 'src/utils/auth'
 import { CustomError } from 'src/utils/error'
@@ -13,7 +13,7 @@ import qs from 'qs'
 export function* request<T>(
   method: keyof typeof requestUtil,
   params: requestUtil.RequestType
-): Generator<CallEffect, T, any> {
+) {
   try {
     const uuid: string = yield call(() => auth.uuid)
 
