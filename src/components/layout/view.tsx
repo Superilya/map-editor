@@ -3,6 +3,7 @@ import { User, Building } from 'src/types/api'
 import { goToPage as goToPageAction } from 'src/ducks/app/actions'
 import { buildingLink, rootLink } from 'src/routing/links'
 import { getDefaultFloor } from 'src/utils/building'
+import { Search } from '../search/view'
 
 import {
   MenuBox,
@@ -77,6 +78,7 @@ export class LayoutView extends Component<PropsType> {
                 </MenuItemList>
               )}
             </MenuItem>
+            <Search />
           </Menu>
           <Avatar url={selfUser ? selfUser.avatarUrl : null} />
         </MenuBox>
