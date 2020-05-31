@@ -3,7 +3,7 @@ import { User, Building } from 'src/types/api'
 import { goToPage as goToPageAction } from 'src/ducks/app/actions'
 import { buildingLink, rootLink } from 'src/routing/links'
 import { getDefaultFloor } from 'src/utils/building'
-import { Search } from '../search/view'
+import { Search } from 'src/components/search'
 
 import {
   MenuBox,
