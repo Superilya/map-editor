@@ -1,21 +1,22 @@
 import React from 'react'
-import Autosuggest from 'react-autosuggest'
+import Autosuggest, { InputProps } from 'react-autosuggest'
 import { auth } from 'src/utils/auth'
 import { get } from 'src/utils/request'
-import { User } from 'src/types/api'
+import { Response, UserResponse, User } from 'src/types/api'
 import throttle from 'lodash.throttle'
 
 type PropsType = {}
 type StateType = {
-  value?: string
-  suggestions: []
+  value: string
+  suggestions: User[] | []
 }
 
-const getSuggestions = async (value: string) => {
+const getSuggestions = async (value: string): Promise<User[]> => {
   const inputValue = value.trim().toLowerCase()
-  const inputLength = inputValue.length
 
-  const response = await get({
+  if (!inputValue) return []
+  
+  const response: Response<UserResponse> = await get({
     url: '/api/users/search',
     data: {
       q: value,
@@ -25,19 +26,14 @@ const getSuggestions = async (value: string) => {
     },
   })
 
-  return inputLength === 0
-    ? []
-    : response.users.filter(
-        (user: User) =>
-          user.name.toLowerCase().slice(0, inputLength) === inputValue
-      )
+  return response.users
 }
 
 const getSuggestionsWithThrottle = throttle(getSuggestions, 1000)
 
-const getSuggestionValue = (suggestion) => suggestion.name
+const getSuggestionValue = (suggestion: User): string => suggestion.name
 
-const renderSuggestion = (suggestion) => <div>{suggestion.name}</div>
+const renderSuggestion = (suggestion: User) => <div>{suggestion.name}</div>
 
 export class Search extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
@@ -49,7 +45,7 @@ export class Search extends React.Component<PropsType, StateType> {
     }
   }
 
-  onChange = (event: KeyboardEvent, { newValue }) => {
+  onChange = (_, { newValue }) => {
     this.setState({
       value: newValue,
     })
@@ -70,7 +66,7 @@ export class Search extends React.Component<PropsType, StateType> {
   render() {
     const { value, suggestions } = this.state
 
-    const inputProps = {
+    const inputProps: InputProps<User> = {
       placeholder: 'Искать',
       value,
       onChange: this.onChange,
