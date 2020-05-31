@@ -43,6 +43,10 @@ export type Border = {
 export type Area = {
   kind: AreaKinds
   borders: Array<Border>
+  width: number
+  height: number
+  offsetX?: number
+  offsetY?: number
 }
 
 export type Place = {

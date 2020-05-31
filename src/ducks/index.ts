@@ -5,10 +5,12 @@ import { users } from './users/reducer'
 import { buildings } from './buildings/reducer'
 import { rooms } from './rooms/reducer'
 import { places } from './places/reducer'
+import { roomEditing } from './room-editing/reducer'
 
 export const getReducers = (history: History) =>
   combineReducers({
     router: connectRouter(history),
+    roomEditing,
     buildings,
     places,
     rooms,

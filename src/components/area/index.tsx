@@ -1,6 +1,6 @@
 import React from 'react'
 import { Area as AreaType } from 'src/types/api'
-import { Shape, KonvaNodeEvents, Path, Group, StageProps } from 'react-konva'
+import { Shape, KonvaNodeEvents, Group, StageProps } from 'react-konva'
 import { AreaKinds, BorderKinds } from 'src/constants/kinds'
 
 const renderArea = (area: AreaType) => (context, shape) => {
@@ -11,10 +11,10 @@ const renderArea = (area: AreaType) => (context, shape) => {
 
   borders.reduce((prev, next) => {
     context.bezierCurveTo(
-      next.cp1x || prev.x,
-      next.cp1y || prev.y,
-      next.cp2x || next.x,
-      next.cp2y || next.y,
+      typeof next.cp1x === 'number' ? next.cp1x : prev.x,
+      typeof next.cp1y === 'number' ? next.cp1y : prev.y,
+      typeof next.cp2x === 'number' ? next.cp2x : prev.x,
+      typeof next.cp2y === 'number' ? next.cp2y : prev.y,
       next.x,
       next.y
     )
@@ -45,12 +45,7 @@ const renderPath = (prev, next) => (context, shape) => {
   context.fillStrokeShape(shape)
 }
 
-const renderBorders = (
-  area: AreaType,
-  x?: number,
-  y?: number,
-  rotation?: number
-) => {
+const renderBorders = (area: AreaType) => {
   const [firstBorder, ...other] = area.borders
 
   if (!firstBorder) {
@@ -62,17 +57,16 @@ const renderBorders = (
   other.reduce((prev, next) => {
     if (next.kind !== BorderKinds.TRANSPARENT) {
       result.push(
-        <Path
+        <Shape
           key={next.id}
-          x={x}
-          y={y}
-          data="qwer"
+          width={20}
+          height={20}
           sceneFunc={renderPath(prev, next)}
           stroke="black"
           strokeWidth={4}
-          rotation={rotation}
+          fillEnabled={false}
         />
-        // <Line x={x} y={y} points={[prev.x, prev.y, next.x, next.y]} stroke="black" strokeWidth={4} />
+        // <Line points={[prev.x, prev.y, next.x, next.y]} stroke="black" strokeWidth={4} />
       )
     }
 
@@ -107,17 +101,17 @@ type PropsType = StageProps & {
   fill?: string
 }
 
-export const Area = ({ area, name, x, y, fill, ...other }: PropsType) => {
+export const Area = ({ area, name, fill, ...other }: PropsType) => {
   return (
     <Group {...other}>
       <Shape
-        x={x}
-        y={y}
+        width={20}
+        height={20}
         sceneFunc={renderArea(area)}
         fill={fill || getFill(area.kind)}
         name={String(name)}
       />
-      {renderBorders(area, x, y)}
+      {renderBorders(area)}
     </Group>
   )
 }

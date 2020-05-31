@@ -17,6 +17,7 @@ type PropsType = {
   mapHeight: number
   selectedPlace?: Place['id']
   selectedRoom?: Room['id']
+  editableRoomId?: Room['id'] | null
   onClickPlace?: (evt: KonvaEventObject<MouseEvent>, place: Place) => void
   onClickRoom?: (evt: KonvaEventObject<MouseEvent>, room: Room) => void
 }
@@ -64,10 +65,10 @@ export class MapView extends Component<PropsType> {
   // }
 
   handleClickRoom: KonvaNodeEvents['onClick'] = (e) => {
-    const { onClickRoom } = this.props
+    const { onClickRoom, editableRoomId } = this.props
     const room = e.currentTarget.attrs.room as Room
 
-    if (typeof onClickRoom === 'function') {
+    if (typeof onClickRoom === 'function' && !editableRoomId) {
       onClickRoom(e, room)
     }
   }
@@ -112,6 +113,7 @@ export class MapView extends Component<PropsType> {
       onClickPlace,
       selectedPlace,
       selectedRoom,
+      editableRoomId,
     } = this.props
 
     if (isRoomsLoading || !width || !height) {
@@ -141,6 +143,7 @@ export class MapView extends Component<PropsType> {
                       fill={selectedRoom === room.id ? '#00FF00' : undefined}
                     />
                     <Places
+                      isEdit={editableRoomId === room.id}
                       selectedPlace={selectedPlace}
                       roomId={room.id}
                       onClickPlace={onClickPlace}

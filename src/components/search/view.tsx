@@ -1,10 +1,10 @@
 import React from 'react'
 import Autosuggest, { InputProps } from 'react-autosuggest'
-import { StyledWrapper } from './styles'
 import { auth } from 'src/utils/auth'
 import { get } from 'src/utils/request'
 import { Response, UserResponse, User } from 'src/types/api'
 import throttle from 'lodash.throttle'
+import { StyledWrapper } from './styles'
 
 type PropsType = {}
 type StateType = {
@@ -16,7 +16,7 @@ const getSuggestions = async (value: string): Promise<User[]> => {
   const inputValue = value.trim().toLowerCase()
 
   if (!inputValue) return []
-  
+
   const response: Response<UserResponse> = await get({
     url: '/api/users/search',
     data: {
@@ -36,10 +36,13 @@ const getSuggestionValue = (suggestion: User): string => suggestion.name
 
 const onClick = (s: string) => console.log(s)
 
-const renderSuggestion = (suggestion: User) =>
-  <div onClick={() => onClick(suggestion.name)}>{suggestion.name}</div>
+const renderSuggestion = (suggestion: User) => (
+  <div key={suggestion.id} onClick={() => onClick(suggestion.name)}>
+    {suggestion.name}
+  </div>
+)
 
-export class Search extends React.Component<PropsType, StateType> {
+export class SearchView extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
     super(props)
 
