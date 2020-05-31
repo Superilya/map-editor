@@ -1,5 +1,6 @@
 import React from 'react'
 import Autosuggest, { InputProps } from 'react-autosuggest'
+import { StyledWrapper } from './styles'
 import { auth } from 'src/utils/auth'
 import { get } from 'src/utils/request'
 import { Response, UserResponse, User } from 'src/types/api'
@@ -33,7 +34,10 @@ const getSuggestionsWithThrottle = throttle(getSuggestions, 1000)
 
 const getSuggestionValue = (suggestion: User): string => suggestion.name
 
-const renderSuggestion = (suggestion: User) => <div>{suggestion.name}</div>
+const onClick = (s: string) => console.log(s)
+
+const renderSuggestion = (suggestion: User) =>
+  <div onClick={() => onClick(suggestion.name)}>{suggestion.name}</div>
 
 export class Search extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
@@ -73,14 +77,16 @@ export class Search extends React.Component<PropsType, StateType> {
     }
 
     return (
-      <Autosuggest
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
-        inputProps={inputProps}
-      />
+      <StyledWrapper>
+        <Autosuggest
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps}
+        />
+      </StyledWrapper>
     )
   }
 }
