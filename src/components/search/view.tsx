@@ -3,6 +3,7 @@ import Autosuggest from 'react-autosuggest'
 import { auth } from 'src/utils/auth'
 import { get } from 'src/utils/request'
 import { User } from 'src/types/api'
+import throttle from 'lodash.throttle'
 
 type PropsType = {}
 type StateType = {
@@ -32,6 +33,8 @@ const getSuggestions = async (value: string) => {
       )
 }
 
+const getSuggestionsWithThrottle = throttle(getSuggestions, 1000)
+
 const getSuggestionValue = (suggestion) => suggestion.name
 
 const renderSuggestion = (suggestion) => <div>{suggestion.name}</div>
@@ -54,7 +57,7 @@ export class Search extends React.Component<PropsType, StateType> {
 
   onSuggestionsFetchRequested = async ({ value }) => {
     this.setState({
-      suggestions: await getSuggestions(value),
+      suggestions: await getSuggestionsWithThrottle(value),
     })
   }
 
