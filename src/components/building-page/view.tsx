@@ -4,7 +4,6 @@ import { Map } from 'src/components/map'
 import { Tool } from 'src/components/tool'
 import { goToPage as goToPageAction } from 'src/ducks/app/actions'
 import { buildingLink } from 'src/routing/links'
-import { KonvaEventObject } from 'konva/types/Node'
 import { Box, FloorsBox, FloorItem } from './styles'
 // import { Places } from 'src/components/places';
 
@@ -67,7 +66,7 @@ export class BuildingPageView extends Component<PropsType, StateType> {
     goToPage(buildingLink.get({ buildingId: String(building.id), floor }))
   }
 
-  handleClickPlace = (evt: KonvaEventObject<MouseEvent>, place: Place) => {
+  handleClickPlace = (place: Place) => {
     const { building, currentFloor, goToPage, selectedPlace } = this.props
 
     if (place.id === selectedPlace) {
@@ -87,7 +86,7 @@ export class BuildingPageView extends Component<PropsType, StateType> {
     }
   }
 
-  handleClickRoom = (evt: KonvaEventObject<MouseEvent>, room: Room) => {
+  handleClickRoom = (room: Room) => {
     const { building, currentFloor, goToPage, selectedRoom } = this.props
 
     if (room.id === selectedRoom) {

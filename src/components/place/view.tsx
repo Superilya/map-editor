@@ -5,16 +5,31 @@ import { Place } from 'src/types/api'
 import { Group, Transformer, Rect } from 'react-konva'
 import { KonvaEventObject } from 'konva/types/Node'
 import Konva from 'konva'
+import { PlaceChange } from 'src/types/place-editing'
 
 type PropsTyps = {
   place: Place
   isSelected?: boolean
   isSelectedEdit?: boolean
   draggable?: boolean
-  onClick: (e: KonvaEventObject<MouseEvent>) => void
+  onClick?: (place: Place) => void
+  onChangePosition?: (place: Place, newX: Place['x'], newY: Place['y']) => void
+  onChangeRotation?: (place: Place, newRotation: Place['rotation']) => void
+  placeChange?: PlaceChange
 }
 
 const enabledAnchors = []
+const getField = (
+  place: Place,
+  field: keyof PlaceChange,
+  placeChange?: PlaceChange
+) => {
+  if (!placeChange) {
+    return place[field]
+  }
+
+  return placeChange[field] ? placeChange[field] : place[field]
+}
 
 export class PlaceView extends Component<PropsTyps> {
   private shapeRef = createRef<Konva.Group>()
@@ -38,28 +53,59 @@ export class PlaceView extends Component<PropsTyps> {
     }
   }
 
+  handleClick = (e: KonvaEventObject<MouseEvent>) => {
+    const { onClick } = this.props
+    const place = e.currentTarget.attrs.place as Place
+
+    if (typeof onClick === 'function') {
+      onClick(place)
+    }
+  }
+
+  handleChangePosition = (e: KonvaEventObject<DragEvent>) => {
+    const { onChangePosition } = this.props
+    const place = e.currentTarget.attrs.place as Place
+    const newX = Math.round(e.currentTarget.x())
+    const newY = Math.round(e.currentTarget.y())
+
+    if (typeof onChangePosition === 'function') {
+      onChangePosition(place, newX, newY)
+    }
+  }
+
+  handleTransform = (e: KonvaEventObject<Event>) => {
+    const { onChangeRotation } = this.props
+    const place = e.currentTarget.attrs.place as Place
+    const rotation = Math.round(e.currentTarget.rotation())
+
+    if (typeof onChangeRotation === 'function') {
+      onChangeRotation(place, rotation)
+    }
+  }
+
   render() {
-    const { place, isSelected, isSelectedEdit, onClick, draggable } = this.props
+    const {
+      place,
+      isSelected,
+      isSelectedEdit,
+      draggable,
+      placeChange,
+    } = this.props
 
     return (
       <Fragment key={place.id}>
         <Group
-          x={place.x}
-          y={place.y}
-          onClick={onClick}
+          x={getField(place, 'x', placeChange)}
+          y={getField(place, 'y', placeChange)}
+          onClick={this.handleClick}
           place={place}
           draggable={draggable}
-          onDragEnd={(e) => {
-            console.log(
-              'drag',
-              place.x,
-              place.y,
-              e.currentTarget.x(),
-              e.currentTarget.y()
-            )
-          }}
+          onDragEnd={this.handleChangePosition}
         >
-          <Group ref={this.shapeRef} rotation={place.rotation}>
+          <Group
+            ref={this.shapeRef}
+            rotation={getField(place, 'rotation', placeChange)}
+          >
             <Area
               fill={isSelected ? '#0000FF' : undefined}
               name={String(place.id)}
@@ -77,10 +123,9 @@ export class PlaceView extends Component<PropsTyps> {
         {isSelectedEdit && (
           <Transformer
             ref={this.trRef}
+            place={place}
             enabledAnchors={enabledAnchors}
-            onTransformEnd={(e) => {
-              console.log(e.currentTarget.rotation())
-            }}
+            onTransformEnd={this.handleTransform}
           />
         )}
       </Fragment>

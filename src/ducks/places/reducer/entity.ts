@@ -1,9 +1,14 @@
 import { InferValueTypes } from 'src/types/common';
 import { PlacesActionType } from '../action-types';
+import { RoomEditinActionType } from 'src/ducks/room-editing/action-types';
 import * as actions from '../actions';
+import { editSubmitSuccess } from 'src/ducks/room-editing/actions';
 import { Place } from 'src/types/api';
 
-export type ActionTypes = ReturnType<InferValueTypes<typeof actions>>;
+export type ActionTypes = ReturnType<
+    InferValueTypes<typeof actions> |
+    typeof editSubmitSuccess
+>;
 
 type StateType = Record<Place['id'], Place>;
 
@@ -11,6 +16,7 @@ export const initialState: StateType = {};
 
 export const entity = (state = initialState, action: ActionTypes): StateType => {
     switch (action.type) {
+        case RoomEditinActionType.EDIT_SUBMIT_SUCCESS:
         case PlacesActionType.CHANGE_MY_PLACE_SUCCESS:
         case PlacesActionType.GET_PLACES_SUCCESS: {
             return action.places.reduce((acc, place) => {

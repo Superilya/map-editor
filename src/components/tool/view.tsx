@@ -4,8 +4,9 @@ import { ToolUserInfo } from 'src/components/tool-user-info'
 import { ToolRoomInfo } from 'src/components/tool-room-info'
 import { changeMyPlace as changeMyPlaceAction } from 'src/ducks/places/actions'
 import {
-  startEdit as startEditAction,
-  endEdit as endEditAction,
+  editStart as editStartAction,
+  editCancel as editCancelAction,
+  editSubmit as editSubmitAction,
 } from 'src/ducks/room-editing/actions'
 import { Box } from './styles'
 
@@ -13,9 +14,11 @@ type PropsType = {
   place?: Place
   room?: Room
   editableRoomId: Room['id'] | null
+  isEditSubmitting: boolean
   changeMyPlace: typeof changeMyPlaceAction
-  startEdit: typeof startEditAction
-  endEdit: typeof endEditAction
+  editStart: typeof editStartAction
+  editCancel: typeof editCancelAction
+  editSubmit: typeof editSubmitAction
 }
 
 export class ToolView extends Component<PropsType> {
@@ -30,21 +33,29 @@ export class ToolView extends Component<PropsType> {
   }
 
   handleClickEdit = (): void => {
-    const { room, startEdit, endEdit, editableRoomId } = this.props
+    const { room, editStart } = this.props
 
     if (!room) {
       return
     }
 
-    if (editableRoomId) {
-      endEdit()
-    } else {
-      startEdit(room.id)
-    }
+    editStart(room.id)
+  }
+
+  handleClickSubmit = () => {
+    const { editSubmit } = this.props
+
+    editSubmit()
+  }
+
+  handleClickCancel = () => {
+    const { editCancel } = this.props
+
+    editCancel()
   }
 
   renderContent() {
-    const { place, room, editableRoomId } = this.props
+    const { place, room, editableRoomId, isEditSubmitting } = this.props
 
     if (place) {
       return (
@@ -58,11 +69,31 @@ export class ToolView extends Component<PropsType> {
     }
 
     if (room) {
+      if (editableRoomId) {
+        return (
+          <>
+            <button
+              onClick={this.handleClickSubmit}
+              type="button"
+              disabled={isEditSubmitting}
+            >
+              Сохранить
+            </button>
+            <button
+              onClick={this.handleClickCancel}
+              type="button"
+              disabled={isEditSubmitting}
+            >
+              Отмена
+            </button>
+          </>
+        )
+      }
       return (
         <>
           <ToolRoomInfo room={room} />
           <button onClick={this.handleClickEdit} type="button">
-            {editableRoomId === null ? 'Редактировать' : 'Сохранить'}
+            Редактировать
           </button>
         </>
       )
