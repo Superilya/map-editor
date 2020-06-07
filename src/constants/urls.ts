@@ -1,4 +1,4 @@
-import { Place } from 'src/types/api'
+import { Place, Room } from 'src/types/api'
 
 export enum Users {
   SELF = '/api/users/self',
@@ -8,8 +8,9 @@ export enum Users {
 export const Map = {
   BUILDINGS: '/api/map/buildings',
   ROOMS: '/api/map/rooms',
+  ROOM_EDIT: (roomId: Room['id']) => `/api/map/rooms/${roomId}/edit`, // TODO поправить нахуй
   PLACES: '/api/map/places',
-  CHANGE_MY_PLACE: (placeId: Place['id']) => `/api/map/places/${placeId}/sit`,
+  CHANGE_MY_PLACE: (placeId: Place['id']) => `/api/map/places/${placeId}/sit`, // TODO поправить нахуй
 }
 
 export enum Auth {

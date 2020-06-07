@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux';
 import { targetRoom } from './target-room';
+import { updatedPlaces } from './updated-places';
+import { state } from './state';
 
 export const roomEditing = combineReducers({
-    targetRoom
+    state,
+    targetRoom,
+    updatedPlaces
 });
