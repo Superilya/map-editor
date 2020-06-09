@@ -4,8 +4,8 @@ import { Place } from 'src/types/api'
 import {
   setPosition as setPositionAction,
   setRotation as setRotationAction,
+  deletePlace as deletePlaceAction,
 } from 'src/ducks/room-editing/actions'
-import { selectUpdatedPlaces } from 'src/ducks/room-editing/selectors'
 
 type PropsType = {
   selectedPlace?: Place['id']
@@ -13,8 +13,8 @@ type PropsType = {
   isEdit: boolean
   setPosition: typeof setPositionAction
   setRotation: typeof setRotationAction
+  deletePlace: typeof deletePlaceAction
   onClickPlace?: (place: Place) => void
-  updatedPlaces: ReturnType<typeof selectUpdatedPlaces> | null
 }
 
 type StateType = {
@@ -54,8 +54,14 @@ export class PlacesView extends Component<PropsType, StateType> {
     setRotation(place.id, newRotation)
   }
 
+  handleDelete = (place: Place) => {
+    const { deletePlace } = this.props
+
+    deletePlace(place.id)
+  }
+
   render() {
-    const { places, selectedPlace, isEdit, updatedPlaces } = this.props
+    const { places, selectedPlace, isEdit } = this.props
     const { selectedEditPlace } = this.state
 
     if (!Array.isArray(places)) {
@@ -69,9 +75,9 @@ export class PlacesView extends Component<PropsType, StateType> {
         onClick={this.handleClick}
         onChangePosition={this.handleChangePosition}
         onChangeRotation={this.handleChangeRotation}
+        onDelete={this.handleDelete}
         isSelected={selectedPlace === place.id}
         place={place}
-        placeChange={updatedPlaces ? updatedPlaces[place.id] : undefined}
         isSelectedEdit={isEdit && place.id === selectedEditPlace}
       />
     ))
