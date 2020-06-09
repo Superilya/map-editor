@@ -10,8 +10,10 @@ export const editSubmit = () => ({
     type: RoomEditinActionType.EDIT_SUBMIT
 })
 
-export const editSubmitSuccess = (places: Array<Place>) => ({
+export const editSubmitSuccess = (roomId: Room['id'], places: Array<Place>, deletedPlaces: Array<Place['id']>) => ({
     type: RoomEditinActionType.EDIT_SUBMIT_SUCCESS,
+    deletedPlaces,
+    roomId,
     places
 });
 
@@ -33,4 +35,9 @@ export const setRotation = (placeId: Place['id'], rotation: Place['rotation']) =
     type: RoomEditinActionType.SET_ROTATION,
     rotation,
     placeId
-})
+});
+
+export const deletePlace = (placeId: Place['id']) => ({
+    type: RoomEditinActionType.DELETE_PLACE,
+    placeId
+});

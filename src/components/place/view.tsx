@@ -2,10 +2,9 @@ import React, { Component, Fragment, createRef } from 'react'
 import { Area } from 'src/components/area'
 import { MapUser } from 'src/components/map-user'
 import { Place } from 'src/types/api'
-import { Group, Transformer, Rect } from 'react-konva'
+import { Group, Transformer, Rect, Circle } from 'react-konva'
 import { KonvaEventObject } from 'konva/types/Node'
 import Konva from 'konva'
-import { PlaceChange } from 'src/types/place-editing'
 
 type PropsTyps = {
   place: Place
@@ -15,21 +14,10 @@ type PropsTyps = {
   onClick?: (place: Place) => void
   onChangePosition?: (place: Place, newX: Place['x'], newY: Place['y']) => void
   onChangeRotation?: (place: Place, newRotation: Place['rotation']) => void
-  placeChange?: PlaceChange
+  onDelete?: (place: Place) => void
 }
 
 const enabledAnchors = []
-const getField = (
-  place: Place,
-  field: keyof PlaceChange,
-  placeChange?: PlaceChange
-) => {
-  if (!placeChange) {
-    return place[field]
-  }
-
-  return placeChange[field] ? placeChange[field] : place[field]
-}
 
 export class PlaceView extends Component<PropsTyps> {
   private shapeRef = createRef<Konva.Group>()
@@ -83,29 +71,29 @@ export class PlaceView extends Component<PropsTyps> {
     }
   }
 
+  handleDelete = (e: KonvaEventObject<MouseEvent>) => {
+    const { onDelete } = this.props
+    const place = e.currentTarget.attrs.place as Place
+
+    if (typeof onDelete === 'function') {
+      onDelete(place)
+    }
+  }
+
   render() {
-    const {
-      place,
-      isSelected,
-      isSelectedEdit,
-      draggable,
-      placeChange,
-    } = this.props
+    const { place, isSelected, isSelectedEdit, draggable } = this.props
 
     return (
       <Fragment key={place.id}>
         <Group
-          x={getField(place, 'x', placeChange)}
-          y={getField(place, 'y', placeChange)}
+          x={place.x}
+          y={place.y}
           onClick={this.handleClick}
           place={place}
           draggable={draggable}
           onDragEnd={this.handleChangePosition}
         >
-          <Group
-            ref={this.shapeRef}
-            rotation={getField(place, 'rotation', placeChange)}
-          >
+          <Group ref={this.shapeRef} rotation={place.rotation}>
             <Area
               fill={isSelected ? '#0000FF' : undefined}
               name={String(place.id)}
@@ -118,6 +106,16 @@ export class PlaceView extends Component<PropsTyps> {
               offsetY={place.area.offsetY || 0}
             />
           </Group>
+          {isSelectedEdit && (
+            <Circle
+              onClick={this.handleDelete}
+              radius={20}
+              place={place}
+              fill="yellow"
+              offsetX={(place.area.offsetX || 0) + 20}
+              offsetY={(place.area.offsetY || 0) + 20}
+            />
+          )}
           {place.userId && <MapUser userId={place.userId} />}
         </Group>
         {isSelectedEdit && (
