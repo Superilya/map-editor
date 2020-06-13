@@ -1,15 +1,15 @@
-import { MapUserView } from './view';
-import { connect } from 'react-redux';
-import { selectUserById } from 'src/ducks/users/selectors';
-import { RootStoreType } from 'src/ducks';
-import { User } from 'src/types/api';
+import { connect } from 'react-redux'
+import { selectUserById } from 'src/ducks/users/selectors'
+import { RootStoreType } from 'src/ducks'
+import { User } from 'src/types/api'
+import { MapUserView } from './view'
 
 type PropsType = {
-    userId: User['id']
+  userId: User['id']
 }
 
 const mapStateToProps = (state: RootStoreType, props: PropsType) => ({
-    user: selectUserById(state, props)
-});
+  user: selectUserById(state, props),
+})
 
-export const MapUser = connect(mapStateToProps)(MapUserView);
+export const MapUser = connect(mapStateToProps)(MapUserView)

@@ -1,3 +1,3 @@
-import { ToolRoomInfoView } from './view';
+import { ToolRoomInfoView } from './view'
 
-export const ToolRoomInfo = ToolRoomInfoView;
+export const ToolRoomInfo = ToolRoomInfoView

@@ -58,4 +58,4 @@ export const StyledWrapper = styled.div`
   .react-autosuggest__suggestion--highlighted {
     background-color: #ddd;
   }
-`;
+`

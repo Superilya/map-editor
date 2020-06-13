@@ -5,15 +5,19 @@ import {
   setPosition as setPositionAction,
   setRotation as setRotationAction,
   deletePlace as deletePlaceAction,
+  selectEdit as selectEditAction,
 } from 'src/ducks/room-editing/actions'
+import { ObjectTypes } from 'src/types/place-editing'
 
 type PropsType = {
   selectedPlace?: Place['id']
   places: Array<Place> | null
   isEdit: boolean
+  selectedEditPlaceId: Place['id'] | null
   setPosition: typeof setPositionAction
   setRotation: typeof setRotationAction
   deletePlace: typeof deletePlaceAction
+  selectEdit: typeof selectEditAction
   onClickPlace?: (place: Place) => void
 }
 
@@ -22,16 +26,13 @@ type StateType = {
 }
 
 export class PlacesView extends Component<PropsType, StateType> {
-  state = {
-    selectedEditPlace: null,
-  }
-
   handleClick = (place: Place) => {
-    const { onClickPlace, isEdit } = this.props
+    const { onClickPlace, isEdit, selectEdit } = this.props
 
     if (isEdit) {
-      this.setState({
-        selectedEditPlace: place.id,
+      selectEdit({
+        objectType: ObjectTypes.PLACE,
+        id: place.id,
       })
 
       return
@@ -61,8 +62,7 @@ export class PlacesView extends Component<PropsType, StateType> {
   }
 
   render() {
-    const { places, selectedPlace, isEdit } = this.props
-    const { selectedEditPlace } = this.state
+    const { places, selectedPlace, isEdit, selectedEditPlaceId } = this.props
 
     if (!Array.isArray(places)) {
       return null
@@ -78,7 +78,7 @@ export class PlacesView extends Component<PropsType, StateType> {
         onDelete={this.handleDelete}
         isSelected={selectedPlace === place.id}
         place={place}
-        isSelectedEdit={isEdit && place.id === selectedEditPlace}
+        isSelectedEdit={isEdit && place.id === selectedEditPlaceId}
       />
     ))
   }

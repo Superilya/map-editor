@@ -1,1 +1,1 @@
-export { PlaceView as Place } from './view';
+export { PlaceView as Place } from './view'

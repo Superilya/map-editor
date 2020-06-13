@@ -1,39 +1,36 @@
 import { InferValueTypes } from 'src/types/common'
+import { SelectedEditType } from 'src/types/place-editing'
 import { RoomEditinActionType } from '../action-types'
 import * as actions from '../actions'
 
 export type ActionTypes = ReturnType<InferValueTypes<typeof actions>>
 
-type StateType = {
-  isSubmitting: boolean
-}
+type StateType = SelectedEditType
 
 export const initialState: StateType = {
-  isSubmitting: false,
+  objectType: null,
+  id: null,
 }
 
-export const state = (
-  reducerState = initialState,
+export const selectedEdit = (
+  state: StateType = initialState,
   action: ActionTypes
 ): StateType => {
   switch (action.type) {
-    case RoomEditinActionType.EDIT_SUBMIT: {
-      return {
-        ...reducerState,
-        isSubmitting: true,
-      }
+    case RoomEditinActionType.SELECT_EDIT: {
+      return action.target
     }
 
     case RoomEditinActionType.EDIT_SUBMIT_SUCCESS:
-    case RoomEditinActionType.EDIT_SUBMIT_FAILED: {
+    case RoomEditinActionType.EDIT_CANCEL: {
       return {
-        ...reducerState,
-        isSubmitting: false,
+        objectType: null,
+        id: null,
       }
     }
 
     default: {
-      return reducerState
+      return state
     }
   }
 }

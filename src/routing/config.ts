@@ -6,7 +6,6 @@ import { initLayout } from 'src/sagas/init/layout'
 import { initAuthSuccess } from 'src/sagas/init/auth-success'
 import { initBuilding } from 'src/sagas/init/building'
 
-import { StrictEffect } from 'redux-saga/effects'
 import { ParamsType, QueryType } from 'src/types/routing'
 import { rootLink, authSuccess, buildingLink } from './links'
 
@@ -17,7 +16,9 @@ export type TRoute = RouteProps & {
       query: QueryType,
       params: ParamsType,
       isFirstRendering: boolean
-    ) => Generator<StrictEffect, void, void>
+    ) => ReturnType<
+      typeof initLayout | typeof initBuilding | typeof initAuthSuccess
+    >
   >
 }
 

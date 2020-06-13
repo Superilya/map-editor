@@ -61,6 +61,15 @@ export class PlaceView extends Component<PropsTyps> {
     }
   }
 
+  handleDradStart = (e: KonvaEventObject<DragEvent>) => {
+    const { onClick } = this.props
+    const place = e.currentTarget.attrs.place as Place
+
+    if (typeof onClick === 'function') {
+      onClick(place)
+    }
+  }
+
   handleTransform = (e: KonvaEventObject<Event>) => {
     const { onChangeRotation } = this.props
     const place = e.currentTarget.attrs.place as Place
@@ -91,6 +100,7 @@ export class PlaceView extends Component<PropsTyps> {
           onClick={this.handleClick}
           place={place}
           draggable={draggable}
+          onDragStart={this.handleDradStart}
           onDragEnd={this.handleChangePosition}
         >
           <Group ref={this.shapeRef} rotation={place.rotation}>

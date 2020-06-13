@@ -1,4 +1,4 @@
-import { SearchPageView } from './view';
-import { withLayout } from 'src/components/layout';
+import { withLayout } from 'src/components/layout'
+import { SearchPageView } from './view'
 
-export const SearchPage = withLayout()(SearchPageView);
+export const SearchPage = withLayout()(SearchPageView)
