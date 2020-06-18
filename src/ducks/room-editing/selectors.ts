@@ -1,7 +1,8 @@
 import { RootStoreType } from 'src/ducks'
 import { createSelector } from 'reselect'
 import { Room, Place } from 'src/types/api'
-import { ObjectTypes } from 'src/types/place-editing'
+import { ObjectTypes } from 'src/constants/objects'
+import { defaultPlaceFields } from 'src/constants/editing'
 
 export const selectTargetRoom = (state: RootStoreType) =>
   state.roomEditing.targetRoom
@@ -11,29 +12,72 @@ export const selectIsSubmitting = (state: RootStoreType) =>
   state.roomEditing.state.isSubmitting
 export const selectDeleted = (state: RootStoreType) =>
   state.roomEditing.deletedPlaces
+export const selectCreated = (state: RootStoreType) => state.roomEditing.created
 
 export const selectEditedPlaces = createSelector(
   (state: RootStoreType) => state.places.entity,
-  (state: RootStoreType, props: { roomId: Room['id'] }) =>
-    state.places.list[props.roomId],
+  (state: RootStoreType, props: { roomId: Room['id'] }) => {
+    const qwe = state.places.list[props.roomId]
+
+    return qwe
+  },
+  (state: RootStoreType) => state.places.areas,
   selectUpdatedPlaces,
   selectDeleted,
-  (entity, list, updated, deleted): Array<Place> => {
-    const rest = list.filter((placeId) => deleted.indexOf(placeId) === -1)
-
-    return rest
+  selectCreated,
+  (state: RootStoreType) => state.areas.entity,
+  (
+    entity,
+    list,
+    areasMapping,
+    updated,
+    deleted,
+    created,
+    areasEntity
+  ): Array<Place> => {
+    const rest = list
+      .filter((placeId) => deleted.indexOf(placeId) === -1)
       .map((placeId) => entity[placeId])
       .filter(Boolean)
-      .map((place) => {
-        if (!updated[place.id]) {
-          return place
+    const assempledCreated = Object.keys(created)
+      .reduce((acc: Array<Place>, placeId) => {
+        const targetArea = areasEntity[created[placeId]]
+
+        if (!targetArea) {
+          return acc
         }
 
-        return {
-          ...place,
-          ...updated[place.id],
+        if (!updated[placeId]) {
+          return acc
         }
+
+        acc.push({
+          id: placeId,
+          x: 50,
+          y: 50,
+          ...updated[placeId],
+          area: targetArea,
+        })
+
+        return acc
+      }, [])
+      .filter(Boolean)
+
+    const existPlaces: Place[] = rest.reduce((acc: Place[], halfPlace) => {
+      const targetArea = areasEntity[areasMapping[halfPlace.id]]
+      if (!targetArea) {
+        return acc
+      }
+
+      acc.push({
+        ...halfPlace,
+        area: targetArea,
       })
+
+      return acc
+    }, [])
+
+    return existPlaces.concat(assempledCreated)
   }
 )
 
@@ -44,24 +88,46 @@ export const selectSelectedEditObjectId = (state: RootStoreType) =>
 export const selectEditablePlaceFields = createSelector(
   selectSelectedEditObjectType,
   selectSelectedEditObjectId,
+  (state: RootStoreType) => state.places.areas,
   (state: RootStoreType) => state.places.entity,
-  (state: RootStoreType) => state.roomEditing.updatedPlaces,
-  (objectType, objectId, entity, updated): Place | null => {
+  selectUpdatedPlaces,
+  selectCreated,
+  (state: RootStoreType) => state.areas.entity,
+  (
+    objectType,
+    objectId,
+    areasMapping,
+    entity,
+    updated,
+    created,
+    areasEntity
+  ): Place | null => {
     if (objectType !== ObjectTypes.PLACE || !objectId) {
       return null
     }
 
-    const place = entity[objectId]
+    const targetArea = areasEntity[created[objectId]]
 
-    if (!place) {
+    if (targetArea) {
+      return {
+        id: objectId,
+        ...defaultPlaceFields,
+        ...updated[objectId],
+        area: targetArea,
+      }
+    }
+
+    const place = entity[objectId]
+    const targetPlaceArea = areasEntity[areasMapping[place.id]]
+
+    if (!place || !targetPlaceArea) {
       return null
     }
 
-    const qwe = {
+    return {
       ...place,
+      area: targetPlaceArea,
       ...updated[place.id],
     }
-
-    return qwe
   }
 )

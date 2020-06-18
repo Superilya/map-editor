@@ -6,6 +6,7 @@ import { buildings } from './buildings/reducer'
 import { rooms } from './rooms/reducer'
 import { places } from './places/reducer'
 import { roomEditing } from './room-editing/reducer'
+import { areas } from './areas/reducer'
 
 export const getReducers = (history: History) =>
   combineReducers({
@@ -13,6 +14,7 @@ export const getReducers = (history: History) =>
     roomEditing,
     buildings,
     places,
+    areas,
     rooms,
     users,
   })

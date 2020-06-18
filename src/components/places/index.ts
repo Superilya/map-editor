@@ -14,7 +14,7 @@ import {
   deletePlace,
   selectEdit,
 } from 'src/ducks/room-editing/actions'
-import { ObjectTypes } from 'src/types/place-editing'
+import { ObjectTypes } from 'src/constants/objects'
 import { PlacesView } from './view'
 
 type PropsType = {

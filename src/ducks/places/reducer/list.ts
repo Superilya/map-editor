@@ -23,13 +23,20 @@ export const list = (state = initialState, action: ActionTypes): StateType => {
     }
 
     case RoomEditinActionType.EDIT_SUBMIT_SUCCESS: {
-      if (!Array.isArray(state[action.roomId])) {
-        return state
-      }
+      const targetList = action.places.reduce(
+        (acc, place) => {
+          if (acc.indexOf(place.id) === -1) {
+            acc.push(place.id)
+          }
+
+          return acc
+        },
+        Array.isArray(state[action.roomId]) ? state[action.roomId] : []
+      )
 
       return {
         ...state,
-        [action.roomId]: state[action.roomId].filter(
+        [action.roomId]: targetList.filter(
           (placeId) => action.deletedPlaces.indexOf(placeId) === -1
         ),
       }

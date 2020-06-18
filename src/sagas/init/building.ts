@@ -64,9 +64,13 @@ export function* initBuilding(query: QueryType, params: ParamsType) {
       roomId: rooms[i].id,
     })
 
-    const userIds = places.map(({ userId }) => userId).filter(Boolean)
+    const userIds = places.map(({ userId }) => userId)
 
-    targetUserIds.push(...userIds)
+    userIds.forEach((userId) => {
+      if (userId) {
+        targetUserIds.push(userId)
+      }
+    })
   }
 
   if (targetUserIds.length) {

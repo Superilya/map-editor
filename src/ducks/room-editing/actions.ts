@@ -1,4 +1,4 @@
-import { Room, Place } from 'src/types/api'
+import { Room, Place, Area } from 'src/types/api'
 import { SelectedEditType } from 'src/types/place-editing'
 import { RoomEditinActionType } from './action-types'
 
@@ -53,6 +53,12 @@ export const setRotation = (
 export const deletePlace = (placeId: Place['id']) => ({
   type: RoomEditinActionType.DELETE_PLACE,
   placeId,
+})
+
+export const createPlace = (areaId: Area['id'], id: string) => ({
+  type: RoomEditinActionType.CREATE_PLACE,
+  areaId,
+  id,
 })
 
 export const selectEdit = (target: SelectedEditType) => ({

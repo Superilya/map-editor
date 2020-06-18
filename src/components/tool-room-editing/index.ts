@@ -11,8 +11,11 @@ import {
   setPosition,
   setRotation,
   deletePlace,
+  createPlace,
 } from 'src/ducks/room-editing/actions'
+import { getObjectsAreas } from 'src/ducks/areas/actions'
 import { RootStoreType } from 'src/ducks'
+import { selectPlaceAreasList } from 'src/ducks/areas/selectors'
 import { ToolRoomEditingView } from './view'
 
 const mapStateToProps = (state: RootStoreType) => ({
@@ -20,6 +23,7 @@ const mapStateToProps = (state: RootStoreType) => ({
   selectedObjectType: selectSelectedEditObjectType(state),
   selectedObjectId: selectSelectedEditObjectId(state),
   editablePlace: selectEditablePlaceFields(state),
+  placesAreas: selectPlaceAreasList(state),
 })
 
 export const ToolRoomEditing = connect(mapStateToProps, {
@@ -28,4 +32,6 @@ export const ToolRoomEditing = connect(mapStateToProps, {
   setPosition,
   setRotation,
   deletePlace,
+  createPlace,
+  getObjectsAreas,
 })(ToolRoomEditingView)

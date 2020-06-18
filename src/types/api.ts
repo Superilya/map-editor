@@ -1,5 +1,6 @@
 import { ServerStatuses } from 'src/constants/server-statuses'
 import { AreaKinds, BorderKinds } from 'src/constants/kinds'
+import { ObjectTypes } from 'src/constants/objects'
 
 export type User = {
   id: number
@@ -41,7 +42,9 @@ export type Border = {
 }
 
 export type Area = {
+  id: number
   kind: AreaKinds
+  objectType: ObjectTypes
   borders: Array<Border>
   width: number
   height: number
@@ -49,9 +52,13 @@ export type Area = {
   offsetY?: number
 }
 
+export type AreaResponse = {
+  areas: Array<Area>
+}
+
 export type Place = {
-  id: number
-  userId: User['id']
+  id: number | string
+  userId?: User['id']
   x: number
   y: number
   area: Area
@@ -81,6 +88,7 @@ type CommonResponses =
   | BuildingResponse
   | RoomsResponse
   | PlaceResponse
+  | AreaResponse
 
 export type Response<T extends CommonResponses> = T & {
   status: ServerStatuses

@@ -62,10 +62,10 @@ export class PlaceView extends Component<PropsTyps> {
   }
 
   handleDradStart = (e: KonvaEventObject<DragEvent>) => {
-    const { onClick } = this.props
+    const { onClick, isSelectedEdit } = this.props
     const place = e.currentTarget.attrs.place as Place
 
-    if (typeof onClick === 'function') {
+    if (typeof onClick === 'function' && !isSelectedEdit) {
       onClick(place)
     }
   }

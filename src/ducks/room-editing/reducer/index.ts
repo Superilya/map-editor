@@ -4,6 +4,7 @@ import { updatedPlaces } from './updated-places'
 import { state } from './state'
 import { deletedPlaces } from './deleted-places'
 import { selectedEdit } from './selected-edit'
+import { created } from './created'
 
 export const roomEditing = combineReducers({
   state,
@@ -11,4 +12,5 @@ export const roomEditing = combineReducers({
   updatedPlaces,
   selectedEdit,
   deletedPlaces,
+  created,
 })

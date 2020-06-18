@@ -7,7 +7,7 @@ import {
   deletePlace as deletePlaceAction,
   selectEdit as selectEditAction,
 } from 'src/ducks/room-editing/actions'
-import { ObjectTypes } from 'src/types/place-editing'
+import { ObjectTypes } from 'src/constants/objects'
 
 type PropsType = {
   selectedPlace?: Place['id']

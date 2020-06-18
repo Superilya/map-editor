@@ -18,9 +18,20 @@ export const selectedEdit = (
 ): StateType => {
   switch (action.type) {
     case RoomEditinActionType.SELECT_EDIT: {
+      if (
+        state.id === action.target.id &&
+        state.objectType === action.target.objectType
+      ) {
+        return {
+          objectType: null,
+          id: null,
+        }
+      }
+
       return action.target
     }
 
+    case RoomEditinActionType.DELETE_PLACE:
     case RoomEditinActionType.EDIT_SUBMIT_SUCCESS:
     case RoomEditinActionType.EDIT_CANCEL: {
       return {

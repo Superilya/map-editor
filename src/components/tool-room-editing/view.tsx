@@ -1,14 +1,17 @@
-import React, { Component, ChangeEvent } from 'react'
+import React, { Component, ChangeEvent, MouseEvent } from 'react'
 import {
   editCancel as editCancelAction,
   editSubmit as editSubmitAction,
   setPosition as setPositionAction,
   setRotation as setRotationAction,
   deletePlace as deletePlaceAction,
+  createPlace as createPlaceAction,
 } from 'src/ducks/room-editing/actions'
+import { getObjectsAreas as getObjectsAreasActions } from 'src/ducks/areas/actions'
 
-import { ObjectTypes } from 'src/types/place-editing'
-import { Place } from 'src/types/api'
+import { ObjectTypes } from 'src/constants/objects'
+import { uniqueString } from 'src/utils/unique-string'
+import { Place, Area } from 'src/types/api'
 
 type Props = {
   selectedObjectType: ObjectTypes | null
@@ -19,10 +22,19 @@ type Props = {
   setPosition: typeof setPositionAction
   setRotation: typeof setRotationAction
   deletePlace: typeof deletePlaceAction
+  createPlace: typeof createPlaceAction
+  getObjectsAreas: typeof getObjectsAreasActions
+  placesAreas: Array<Area>
   isEditSubmitting: boolean
 }
 
 export class ToolRoomEditingView extends Component<Props> {
+  componentDidMount() {
+    const { getObjectsAreas } = this.props
+
+    getObjectsAreas()
+  }
+
   handleClickSubmit = () => {
     const { editSubmit } = this.props
 
@@ -68,8 +80,15 @@ export class ToolRoomEditingView extends Component<Props> {
     setRotation(selectedObjectId, rotation)
   }
 
+  handleClickAdd = (e: MouseEvent<HTMLButtonElement>) => {
+    const { createPlace } = this.props
+    const areaId = Number(e.currentTarget.dataset.areaId)
+
+    createPlace(areaId, uniqueString())
+  }
+
   renderFields() {
-    const { selectedObjectType, editablePlace } = this.props
+    const { selectedObjectType, editablePlace, placesAreas } = this.props
 
     switch (selectedObjectType) {
       case ObjectTypes.PLACE: {
@@ -108,7 +127,17 @@ export class ToolRoomEditingView extends Component<Props> {
       }
 
       default: {
-        return null
+        return placesAreas.map((area) => (
+          <div>
+            <button
+              type="button"
+              onClick={this.handleClickAdd}
+              data-area-id={area.id}
+            >
+              Добвать place {area.id}
+            </button>
+          </div>
+        ))
       }
     }
   }

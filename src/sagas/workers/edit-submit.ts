@@ -3,6 +3,7 @@ import {
   selectUpdatedPlaces,
   selectTargetRoom,
   selectDeleted,
+  selectCreated,
 } from 'src/ducks/room-editing/selectors'
 import { Map } from 'src/constants/urls'
 import { request } from 'src/sagas/request'
@@ -19,6 +20,9 @@ export function* editSubmitWorker() {
   const deletedPlaces: ReturnType<typeof selectDeleted> = yield select(
     selectDeleted
   )
+  const createdPlaces: ReturnType<typeof selectCreated> = yield select(
+    selectCreated
+  )
   const roomId: ReturnType<typeof selectTargetRoom> = yield select(
     selectTargetRoom
   )
@@ -34,12 +38,21 @@ export function* editSubmitWorker() {
         places: {
           update: Object.keys(updatedPlaces)
             .map(Number)
-            .filter((placeId) => deletedPlaces.indexOf(placeId) === -1)
+            .filter(
+              (placeId) =>
+                Boolean(placeId) &&
+                deletedPlaces.indexOf(placeId) === -1 &&
+                !createdPlaces[placeId]
+            )
             .map((placeId) => ({
               id: placeId,
               ...updatedPlaces[placeId],
             })),
           delete: deletedPlaces,
+          create: Object.keys(createdPlaces).map((placeId) => ({
+            areaId: createdPlaces[placeId],
+            ...updatedPlaces[placeId],
+          })),
         },
       },
     })

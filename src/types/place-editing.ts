@@ -1,13 +1,10 @@
 import { Place } from 'src/types/api'
+import { ObjectTypes } from 'src/constants/objects'
 
 export type PlaceChange = {
   x?: Place['x']
   y?: Place['y']
   rotation?: Place['rotation']
-}
-
-export enum ObjectTypes {
-  PLACE,
 }
 
 export type SelectedEditType =

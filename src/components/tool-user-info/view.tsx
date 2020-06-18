@@ -2,7 +2,7 @@ import React from 'react'
 import { User } from 'src/types/api'
 
 type PropsType = {
-  user: User
+  user: User | null
 }
 
 export const ToolUserInfoView = ({ user }: PropsType) => {
