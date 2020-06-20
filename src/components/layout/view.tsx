@@ -21,6 +21,7 @@ export type PropsType = {
   buildings: Array<Building>
   selfUser: User
   children: ReactNode
+  isEditing: boolean
   goToPage: typeof goToPageAction
 }
 
@@ -50,7 +51,7 @@ export class LayoutView extends Component<PropsType> {
   }
 
   render() {
-    const { selfUser, isBuildingsLoading, buildings, children } = this.props
+    const { selfUser, isBuildingsLoading, buildings, children, isEditing } = this.props
     const { isBuildingsListOpen } = this.state
 
     return (
@@ -63,7 +64,7 @@ export class LayoutView extends Component<PropsType> {
               onClick={this.handleToggleList}
             >
               <span>Список зданий</span>
-              {!isBuildingsLoading && isBuildingsListOpen && (
+              {!isBuildingsLoading && isBuildingsListOpen && !isEditing && (
                 <MenuItemList>
                   {buildings.map((building) => (
                     <SubItem

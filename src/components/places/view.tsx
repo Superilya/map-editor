@@ -63,6 +63,7 @@ export class PlacesView extends Component<PropsType, StateType> {
 
   render() {
     const { places, selectedPlace, isEdit, selectedEditPlaceId } = this.props
+    // console.log('places render', JSON.stringify(places && places[0] && places[0].rotation));
 
     if (!Array.isArray(places)) {
       return null

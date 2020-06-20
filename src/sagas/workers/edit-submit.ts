@@ -12,6 +12,7 @@ import {
   editSubmitFailed,
   editSubmitSuccess,
 } from 'src/ducks/room-editing/actions'
+import { RootStoreType } from 'src/ducks'
 
 export function* editSubmitWorker() {
   const updatedPlaces: ReturnType<typeof selectUpdatedPlaces> = yield select(
@@ -32,6 +33,10 @@ export function* editSubmitWorker() {
       throw new Error()
     }
 
+    const existPlaces = yield select(
+      (state: RootStoreType) => state.places.list[roomId] || [],
+    )
+
     const { places }: Response<PlaceResponse> = yield call(request, 'post', {
       url: Map.ROOM_EDIT(roomId),
       data: {
@@ -48,7 +53,8 @@ export function* editSubmitWorker() {
               id: placeId,
               ...updatedPlaces[placeId],
             })),
-          delete: deletedPlaces,
+          delete: deletedPlaces
+            .filter((id) => existPlaces.includes(id)),
           create: Object.keys(createdPlaces).map((placeId) => ({
             areaId: createdPlaces[placeId],
             ...updatedPlaces[placeId],

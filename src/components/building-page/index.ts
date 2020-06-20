@@ -10,6 +10,7 @@ import {
 import { goToPage } from 'src/ducks/app/actions'
 import { BuildingPageParams, BuildingPageQuery } from 'src/types/routing'
 import { BuildingPageView } from './view'
+import { selectTargetRoom } from 'src/ducks/room-editing/selectors'
 
 const mapStateToProps = (
   state: RootStoreType,
@@ -27,6 +28,7 @@ const mapStateToProps = (
     currentFloor: Number(props.match.params.floor),
     selectedPlace: query.place ? Number(query.place) : undefined,
     selectedRoom: query.room ? Number(query.room) : undefined,
+    isEditing: selectTargetRoom(state) !== null,
   }
 }
 

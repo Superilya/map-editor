@@ -16,11 +16,8 @@ export const selectCreated = (state: RootStoreType) => state.roomEditing.created
 
 export const selectEditedPlaces = createSelector(
   (state: RootStoreType) => state.places.entity,
-  (state: RootStoreType, props: { roomId: Room['id'] }) => {
-    const qwe = state.places.list[props.roomId]
-
-    return qwe
-  },
+  (state: RootStoreType, props: { roomId: Room['id'] }) => 
+    state.places.list[props.roomId],
   (state: RootStoreType) => state.places.areas,
   selectUpdatedPlaces,
   selectDeleted,
@@ -35,7 +32,7 @@ export const selectEditedPlaces = createSelector(
     created,
     areasEntity
   ): Array<Place> => {
-    const rest = list
+    const rest = !Array.isArray(list) ? [] : list
       .filter((placeId) => deleted.indexOf(placeId) === -1)
       .map((placeId) => entity[placeId])
       .filter(Boolean)
@@ -55,8 +52,8 @@ export const selectEditedPlaces = createSelector(
           id: placeId,
           x: 50,
           y: 50,
-          ...updated[placeId],
           area: targetArea,
+          ...updated[placeId],
         })
 
         return acc
@@ -65,14 +62,25 @@ export const selectEditedPlaces = createSelector(
 
     const existPlaces: Place[] = rest.reduce((acc: Place[], halfPlace) => {
       const targetArea = areasEntity[areasMapping[halfPlace.id]]
+      const targetUpdate = updated[halfPlace.id];
       if (!targetArea) {
         return acc
       }
 
-      acc.push({
-        ...halfPlace,
-        area: targetArea,
-      })
+      if (!targetUpdate) {
+        acc.push({
+          ...halfPlace,
+          area: targetArea,
+        })
+      } else {
+        acc.push({
+          ...halfPlace,
+          area: targetArea,
+          ...targetUpdate
+        })
+      }
+
+      
 
       return acc
     }, [])

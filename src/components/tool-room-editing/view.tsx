@@ -49,7 +49,7 @@ export class ToolRoomEditingView extends Component<Props> {
 
   handleChangePlaceX = (e: ChangeEvent<HTMLInputElement>) => {
     const { setPosition, selectedObjectId, editablePlace } = this.props
-    const x = Number(typeof e.currentTarget.value)
+    const x = Number(e.currentTarget.value)
 
     if (!selectedObjectId || !editablePlace) {
       return

@@ -21,6 +21,18 @@ export const created = (
       }
     }
 
+    case RoomEditinActionType.DELETE_PLACE: {
+      if (!state[action.placeId]) {
+        return state;
+      }
+
+      const targetState = { ...state };
+
+      delete targetState[action.placeId];
+
+      return targetState;
+    }
+
     case RoomEditinActionType.EDIT_SUBMIT_SUCCESS:
     case RoomEditinActionType.EDIT_CANCEL: {
       return {}

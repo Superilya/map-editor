@@ -13,6 +13,7 @@ type PropsType = {
   currentFloor: Building['floors'][0] | null
   selectedPlace?: Place['id']
   selectedRoom?: Room['id']
+  isEditing: boolean
   goToPage: typeof goToPageAction
 }
 
@@ -61,13 +62,21 @@ export class BuildingPageView extends Component<PropsType, StateType> {
 
   handleClickFloor = (e: React.MouseEvent<HTMLDivElement>) => {
     const { floor } = e.currentTarget.dataset
-    const { goToPage, building } = this.props
+    const { goToPage, building, isEditing } = this.props
+
+    if (isEditing) {
+      return
+    }
 
     goToPage(buildingLink.get({ buildingId: String(building.id), floor }))
   }
 
   handleClickPlace = (place: Place) => {
-    const { building, currentFloor, goToPage, selectedPlace } = this.props
+    const { building, currentFloor, goToPage, selectedPlace, isEditing } = this.props
+
+    if (isEditing) {
+      return
+    }
 
     if (place.id === selectedPlace) {
       goToPage(
@@ -130,7 +139,7 @@ export class BuildingPageView extends Component<PropsType, StateType> {
   }
 
   render() {
-    const { building, isBuildingsLoading, currentFloor } = this.props
+    const { building, isBuildingsLoading, currentFloor, isEditing } = this.props
 
     if (isBuildingsLoading) {
       return null
@@ -146,6 +155,7 @@ export class BuildingPageView extends Component<PropsType, StateType> {
               active={floor === currentFloor}
               data-floor={floor}
               onClick={this.handleClickFloor}
+              disabled={isEditing}
             >
               {floor}
             </FloorItem>

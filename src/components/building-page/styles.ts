@@ -19,14 +19,21 @@ export const FloorsBox = styled.div`
 
 type FloorItemPropsType = {
   active: boolean
+  disabled: boolean
 }
 
 export const FloorItem = styled.div<FloorItemPropsType>`
   padding: 20px;
   border-radius: 500px;
-  background-color: ${({ active }) => (active ? 'yellow' : 'green')};
+  background-color: ${({ active, disabled }) => {
+    if (disabled) {
+      return 'grey'
+    }
+
+    return active ? 'yellow' : 'green'
+  }};
   user-select: none;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'inherit' : 'pointer')};
 
   & + & {
     margin-top: 10px;

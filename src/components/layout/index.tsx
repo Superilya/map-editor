@@ -8,12 +8,14 @@ import {
 } from 'src/ducks/buildings/selectors'
 import { goToPage } from 'src/ducks/app/actions'
 import { LayoutView } from './view'
+import { selectTargetRoom } from 'src/ducks/room-editing/selectors'
 
 const mapStateToProps = (state: RootStoreType) => ({
   isSelfLoading: selectIsSelfLoading(state),
   selfUser: selectSelfUser(state),
   isBuildingsLoading: selectIsBuildingsLoading(state),
   buildings: selectBuildings(state),
+  isEditing: selectTargetRoom(state) !== null,
 })
 
 export const Layout = connect(mapStateToProps, { goToPage })(LayoutView)

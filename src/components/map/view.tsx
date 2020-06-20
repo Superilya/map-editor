@@ -141,6 +141,10 @@ export class MapView extends Component<PropsType> {
                       room={room}
                       fill={selectedRoom === room.id ? '#00FF00' : undefined}
                     />
+                  </Group>
+                ))}
+                {rooms.map((room: Room) => (
+                  <Group x={room.x} y={room.y} key={room.id}>
                     <Places
                       selectedPlace={selectedPlace}
                       roomId={room.id}
