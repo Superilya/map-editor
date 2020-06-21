@@ -1,15 +1,21 @@
 import React from 'react'
-import Autosuggest, { InputProps } from 'react-autosuggest'
+import Autosuggest, {
+  InputProps,
+  OnSuggestionSelected,
+} from 'react-autosuggest'
 import { auth } from 'src/utils/auth'
 import { get } from 'src/utils/request'
+import { search as searchActrion } from 'src/ducks/search/actions'
 import { Response, UserResponse, User } from 'src/types/api'
 import throttle from 'lodash.throttle'
 import { StyledWrapper } from './styles'
 
-type PropsType = {}
+type PropsType = {
+  search: typeof searchActrion
+}
 type StateType = {
   value: string
-  suggestions: User[] | []
+  suggestions: User[]
 }
 
 const getSuggestions = async (value: string): Promise<User[]> => {
@@ -34,13 +40,7 @@ const getSuggestionsWithThrottle = throttle(getSuggestions, 1000)
 
 const getSuggestionValue = (suggestion: User): string => suggestion.name
 
-const onClick = (s: string) => console.log(s)
-
-const renderSuggestion = (suggestion: User) => (
-  <div key={suggestion.id} onClick={() => onClick(suggestion.name)}>
-    {suggestion.name}
-  </div>
-)
+const renderSuggestion = (suggestion: User) => <div>{suggestion.name}</div>
 
 export class SearchView extends React.Component<PropsType, StateType> {
   constructor(props: PropsType) {
@@ -56,6 +56,12 @@ export class SearchView extends React.Component<PropsType, StateType> {
     this.setState({
       value: newValue,
     })
+  }
+
+  handleSelect: OnSuggestionSelected<User> = (e, { suggestion }) => {
+    const { search } = this.props
+
+    search(suggestion.id)
   }
 
   onSuggestionsFetchRequested = async ({ value }) => {
@@ -88,6 +94,7 @@ export class SearchView extends React.Component<PropsType, StateType> {
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
+          onSuggestionSelected={this.handleSelect}
         />
       </StyledWrapper>
     )

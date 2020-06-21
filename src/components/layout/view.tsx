@@ -51,7 +51,13 @@ export class LayoutView extends Component<PropsType> {
   }
 
   render() {
-    const { selfUser, isBuildingsLoading, buildings, children, isEditing } = this.props
+    const {
+      selfUser,
+      isBuildingsLoading,
+      buildings,
+      children,
+      isEditing,
+    } = this.props
     const { isBuildingsListOpen } = this.state
 
     return (

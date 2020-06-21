@@ -34,7 +34,7 @@ export function* editSubmitWorker() {
     }
 
     const existPlaces = yield select(
-      (state: RootStoreType) => state.places.list[roomId] || [],
+      (state: RootStoreType) => state.places.list[roomId] || []
     )
 
     const { places }: Response<PlaceResponse> = yield call(request, 'post', {
@@ -53,8 +53,7 @@ export function* editSubmitWorker() {
               id: placeId,
               ...updatedPlaces[placeId],
             })),
-          delete: deletedPlaces
-            .filter((id) => existPlaces.includes(id)),
+          delete: deletedPlaces.filter((id) => existPlaces.includes(id)),
           create: Object.keys(createdPlaces).map((placeId) => ({
             areaId: createdPlaces[placeId],
             ...updatedPlaces[placeId],

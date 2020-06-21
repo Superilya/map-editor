@@ -68,7 +68,6 @@ export const updatedPlaces = (
 
     case RoomEditinActionType.EDIT_SUBMIT_SUCCESS:
     case RoomEditinActionType.EDIT_CANCEL: {
-      console.log('CANCEL');
       return {}
     }
 

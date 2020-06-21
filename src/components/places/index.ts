@@ -25,9 +25,11 @@ const mapStateToProps = (state: RootStoreType, props: PropsType) => {
   const isEdit = selectTargetRoom(state) === props.roomId
   const selectedObjectType = selectSelectedEditObjectType(state)
   if (isEdit) {
-    console.log('isEdit', isEdit, isEdit
-    ? selectEditedPlaces(state, props)
-    : selectPlaces(state, props));
+    console.log(
+      'isEdit',
+      isEdit,
+      isEdit ? selectEditedPlaces(state, props) : selectPlaces(state, props)
+    )
   }
 
   return {

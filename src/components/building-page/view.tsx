@@ -72,7 +72,13 @@ export class BuildingPageView extends Component<PropsType, StateType> {
   }
 
   handleClickPlace = (place: Place) => {
-    const { building, currentFloor, goToPage, selectedPlace, isEditing } = this.props
+    const {
+      building,
+      currentFloor,
+      goToPage,
+      selectedPlace,
+      isEditing,
+    } = this.props
 
     if (isEditing) {
       return

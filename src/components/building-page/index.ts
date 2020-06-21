@@ -9,8 +9,8 @@ import {
 } from 'src/ducks/buildings/selectors'
 import { goToPage } from 'src/ducks/app/actions'
 import { BuildingPageParams, BuildingPageQuery } from 'src/types/routing'
-import { BuildingPageView } from './view'
 import { selectTargetRoom } from 'src/ducks/room-editing/selectors'
+import { BuildingPageView } from './view'
 
 const mapStateToProps = (
   state: RootStoreType,

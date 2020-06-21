@@ -23,14 +23,14 @@ export const created = (
 
     case RoomEditinActionType.DELETE_PLACE: {
       if (!state[action.placeId]) {
-        return state;
+        return state
       }
 
-      const targetState = { ...state };
+      const targetState = { ...state }
 
-      delete targetState[action.placeId];
+      delete targetState[action.placeId]
 
-      return targetState;
+      return targetState
     }
 
     case RoomEditinActionType.EDIT_SUBMIT_SUCCESS:

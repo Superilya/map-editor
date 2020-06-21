@@ -83,12 +83,23 @@ export type RoomsResponse = {
   rooms: Array<Room>
 }
 
+export type Search = Place & {
+  room: Room & {
+    building: Building
+  }
+}
+
+export type SearchResponse = {
+  search: Search[]
+}
+
 type CommonResponses =
   | UserResponse
   | BuildingResponse
   | RoomsResponse
   | PlaceResponse
   | AreaResponse
+  | SearchResponse
 
 export type Response<T extends CommonResponses> = T & {
   status: ServerStatuses

@@ -7,8 +7,8 @@ import {
   selectBuildings,
 } from 'src/ducks/buildings/selectors'
 import { goToPage } from 'src/ducks/app/actions'
-import { LayoutView } from './view'
 import { selectTargetRoom } from 'src/ducks/room-editing/selectors'
+import { LayoutView } from './view'
 
 const mapStateToProps = (state: RootStoreType) => ({
   isSelfLoading: selectIsSelfLoading(state),
