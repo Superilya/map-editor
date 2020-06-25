@@ -1,69 +1,128 @@
-import { select, call, put } from 'redux-saga/effects'
+import { select, call, put } from 'redux-saga/effects';
+import { selectTargetRoom } from 'src/ducks/room-editing/selectors';
 import {
-  selectUpdatedPlaces,
-  selectTargetRoom,
-  selectDeleted,
-  selectCreated,
-} from 'src/ducks/room-editing/selectors'
-import { Map } from 'src/constants/urls'
-import { request } from 'src/sagas/request'
-import { Response, PlaceResponse } from 'src/types/api'
+    selectUpdatedPlaces,
+    selectDeletedPlaces,
+    selectCreatedPlaces,
+} from 'src/ducks/places-editing/selectors';
 import {
-  editSubmitFailed,
-  editSubmitSuccess,
-} from 'src/ducks/room-editing/actions'
-import { RootStoreType } from 'src/ducks'
+    selectUpdatedObjects,
+    selectDeletedObjects,
+    selectCreatedObjects,
+} from 'src/ducks/objects-editing/selectors';
+import { Map } from 'src/constants/urls';
+import { request } from 'src/sagas/request';
+import { Response, PlaceResponse, ObjectResponse } from 'src/types/api';
+import {
+    editSubmitFailed,
+    editSubmitSuccess,
+} from 'src/ducks/room-editing/actions';
+import { RootStoreType } from 'src/ducks';
 
 export function* editSubmitWorker() {
-  const updatedPlaces: ReturnType<typeof selectUpdatedPlaces> = yield select(
-    selectUpdatedPlaces
-  )
-  const deletedPlaces: ReturnType<typeof selectDeleted> = yield select(
-    selectDeleted
-  )
-  const createdPlaces: ReturnType<typeof selectCreated> = yield select(
-    selectCreated
-  )
-  const roomId: ReturnType<typeof selectTargetRoom> = yield select(
-    selectTargetRoom
-  )
+    const updatedPlaces: ReturnType<typeof selectUpdatedPlaces> = yield select(
+        selectUpdatedPlaces
+    );
+    const deletedPlaces: ReturnType<typeof selectDeletedPlaces> = yield select(
+        selectDeletedPlaces
+    );
+    const createdPlaces: ReturnType<typeof selectCreatedPlaces> = yield select(
+        selectCreatedPlaces
+    );
 
-  try {
-    if (!roomId) {
-      throw new Error()
-    }
+    const updatedObjects: ReturnType<typeof selectUpdatedObjects> = yield select(
+        selectUpdatedObjects
+    );
+    const deletedObjects: ReturnType<typeof selectDeletedObjects> = yield select(
+        selectDeletedObjects
+    );
+    const createdObjects: ReturnType<typeof selectCreatedObjects> = yield select(
+        selectCreatedObjects
+    );
 
-    const existPlaces = yield select(
-      (state: RootStoreType) => state.places.list[roomId] || []
-    )
+    const roomId: ReturnType<typeof selectTargetRoom> = yield select(
+        selectTargetRoom
+    );
 
-    const { places }: Response<PlaceResponse> = yield call(request, 'post', {
-      url: Map.ROOM_EDIT(roomId),
-      data: {
-        places: {
-          update: Object.keys(updatedPlaces)
-            .map(Number)
-            .filter(
-              (placeId) =>
-                Boolean(placeId) &&
-                deletedPlaces.indexOf(placeId) === -1 &&
-                !createdPlaces[placeId]
+    try {
+        if (!roomId) {
+            throw new Error();
+        }
+
+        const existPlaces = yield select(
+            (state: RootStoreType) => state.places.list[roomId] || []
+        );
+
+        const existObjects = yield select(
+            (state: RootStoreType) => state.objects.list[roomId] || []
+        );
+
+        const {
+            places,
+            objects,
+        }: Response<PlaceResponse & ObjectResponse> = yield call(
+            request,
+            'post',
+            {
+                url: Map.ROOM_EDIT(roomId),
+                data: {
+                    places: {
+                        update: Object.keys(updatedPlaces)
+                            .map(Number)
+                            .filter(
+                                (placeId) =>
+                                    Boolean(placeId) &&
+                                    deletedPlaces.indexOf(placeId) === -1 &&
+                                    !createdPlaces[placeId]
+                            )
+                            .map((placeId) => ({
+                                id: placeId,
+                                ...updatedPlaces[placeId],
+                            })),
+                        delete: deletedPlaces.filter((id) =>
+                            existPlaces.includes(id)
+                        ),
+                        create: Object.keys(createdPlaces).map((placeId) => ({
+                            areaId: createdPlaces[placeId],
+                            ...updatedPlaces[placeId],
+                        })),
+                    },
+                    objects: {
+                        // TODO убрать копи паст
+                        update: Object.keys(updatedObjects)
+                            .map(Number)
+                            .filter(
+                                (placeId) =>
+                                    Boolean(placeId) &&
+                                    deletedObjects.indexOf(placeId) === -1 &&
+                                    !createdObjects[placeId]
+                            )
+                            .map((placeId) => ({
+                                id: placeId,
+                                ...updatedObjects[placeId],
+                            })),
+                        delete: deletedObjects.filter((id) =>
+                            existObjects.includes(id)
+                        ),
+                        create: Object.keys(createdObjects).map((placeId) => ({
+                            areaId: createdObjects[placeId],
+                            ...updatedObjects[placeId],
+                        })),
+                    },
+                },
+            }
+        );
+
+        yield put(
+            editSubmitSuccess(
+                roomId,
+                places,
+                objects,
+                deletedPlaces,
+                deletedObjects
             )
-            .map((placeId) => ({
-              id: placeId,
-              ...updatedPlaces[placeId],
-            })),
-          delete: deletedPlaces.filter((id) => existPlaces.includes(id)),
-          create: Object.keys(createdPlaces).map((placeId) => ({
-            areaId: createdPlaces[placeId],
-            ...updatedPlaces[placeId],
-          })),
-        },
-      },
-    })
-
-    yield put(editSubmitSuccess(roomId, places, deletedPlaces))
-  } catch (e) {
-    yield put(editSubmitFailed())
-  }
+        );
+    } catch (e) {
+        yield put(editSubmitFailed());
+    }
 }

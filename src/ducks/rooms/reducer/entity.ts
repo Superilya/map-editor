@@ -1,32 +1,32 @@
-import { InferValueTypes } from 'src/types/common'
-import { Room } from 'src/types/api'
-import { RoomsActionType } from '../action-types'
-import * as actions from '../actions'
+import { InferValueTypes } from 'src/types/common';
+import { Room } from 'src/types/api';
+import { RoomsActionType } from '../action-types';
+import * as actions from '../actions';
 
-export type ActionTypes = ReturnType<InferValueTypes<typeof actions>>
+export type ActionTypes = ReturnType<InferValueTypes<typeof actions>>;
 
-type StateType = Record<Room['id'], Omit<Room, 'area'>>
+type StateType = Record<Room['id'], Omit<Room, 'area'>>;
 
-export const initialState: StateType = {}
+export const initialState: StateType = {};
 
 export const entity = (
-  state = initialState,
-  action: ActionTypes
+    state = initialState,
+    action: ActionTypes
 ): StateType => {
-  switch (action.type) {
-    case RoomsActionType.GET_ROOMS_SUCCESS: {
-      return action.rooms.reduce(
-        (acc, room) => {
-          acc[room.id] = room
+    switch (action.type) {
+        case RoomsActionType.GET_ROOMS_SUCCESS: {
+            return action.rooms.reduce(
+                (acc, room) => {
+                    acc[room.id] = room;
 
-          return acc
-        },
-        { ...state }
-      )
-    }
+                    return acc;
+                },
+                { ...state }
+            );
+        }
 
-    default: {
-      return state
+        default: {
+            return state;
+        }
     }
-  }
-}
+};

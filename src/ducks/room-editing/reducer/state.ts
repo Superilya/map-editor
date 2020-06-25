@@ -1,39 +1,39 @@
-import { InferValueTypes } from 'src/types/common'
-import { RoomEditinActionType } from '../action-types'
-import * as actions from '../actions'
+import { InferValueTypes } from 'src/types/common';
+import { RoomEditinActionType } from '../action-types';
+import * as actions from '../actions';
 
-export type ActionTypes = ReturnType<InferValueTypes<typeof actions>>
+export type ActionTypes = ReturnType<InferValueTypes<typeof actions>>;
 
 type StateType = {
-  isSubmitting: boolean
-}
+    isSubmitting: boolean;
+};
 
 export const initialState: StateType = {
-  isSubmitting: false,
-}
+    isSubmitting: false,
+};
 
 export const state = (
-  reducerState = initialState,
-  action: ActionTypes
+    reducerState = initialState,
+    action: ActionTypes
 ): StateType => {
-  switch (action.type) {
-    case RoomEditinActionType.EDIT_SUBMIT: {
-      return {
-        ...reducerState,
-        isSubmitting: true,
-      }
-    }
+    switch (action.type) {
+        case RoomEditinActionType.EDIT_SUBMIT: {
+            return {
+                ...reducerState,
+                isSubmitting: true,
+            };
+        }
 
-    case RoomEditinActionType.EDIT_SUBMIT_SUCCESS:
-    case RoomEditinActionType.EDIT_SUBMIT_FAILED: {
-      return {
-        ...reducerState,
-        isSubmitting: false,
-      }
-    }
+        case RoomEditinActionType.EDIT_SUBMIT_SUCCESS:
+        case RoomEditinActionType.EDIT_SUBMIT_FAILED: {
+            return {
+                ...reducerState,
+                isSubmitting: false,
+            };
+        }
 
-    default: {
-      return reducerState
+        default: {
+            return reducerState;
+        }
     }
-  }
-}
+};

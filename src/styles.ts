@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
     body, input, button {
@@ -10,4 +10,4 @@ export const GlobalStyle = createGlobalStyle`
     html, body, #root {
         height: 100%;
     }
-`
+`;

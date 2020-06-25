@@ -1,17 +1,17 @@
 class Auth {
-  private key = 'uuid'
+    private key = 'uuid';
 
-  get uuid(): string | null {
-    return localStorage.getItem(this.key)
-  }
-
-  set uuid(token: string | null) {
-    if (!token) {
-      localStorage.removeItem(this.key)
+    get uuid(): string | null {
+        return localStorage.getItem(this.key);
     }
 
-    localStorage.setItem(this.key, token || '')
-  }
+    set uuid(token: string | null) {
+        if (!token) {
+            localStorage.removeItem(this.key);
+        }
+
+        localStorage.setItem(this.key, token || '');
+    }
 }
 
-export const auth = new Auth()
+export const auth = new Auth();

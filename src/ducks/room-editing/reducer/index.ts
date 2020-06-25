@@ -1,16 +1,10 @@
-import { combineReducers } from 'redux'
-import { targetRoom } from './target-room'
-import { updatedPlaces } from './updated-places'
-import { state } from './state'
-import { deletedPlaces } from './deleted-places'
-import { selectedEdit } from './selected-edit'
-import { created } from './created'
+import { combineReducers } from 'redux';
+import { targetRoom } from './target-room';
+import { state } from './state';
+import { selectedEdit } from './selected-edit';
 
 export const roomEditing = combineReducers({
-  state,
-  targetRoom,
-  updatedPlaces,
-  selectedEdit,
-  deletedPlaces,
-  created,
-})
+    state,
+    targetRoom,
+    selectedEdit,
+});

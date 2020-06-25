@@ -1,12 +1,12 @@
-import { combineReducers } from 'redux'
-import { entity } from './entity'
-import { list } from './list'
-import { state } from './state'
-import { areas } from './areas'
+import { combineReducers } from 'redux';
+import { entity } from './entity';
+import { list } from './list';
+import { state } from './state';
+import { areas } from './areas';
 
 export const rooms = combineReducers({
-  entity,
-  state,
-  areas,
-  list,
-})
+    entity,
+    state,
+    areas,
+    list,
+});

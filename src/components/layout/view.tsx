@@ -1,96 +1,104 @@
-import React, { Component, ReactNode, MouseEvent } from 'react'
-import { User, Building } from 'src/types/api'
-import { goToPage as goToPageAction } from 'src/ducks/app/actions'
-import { buildingLink, rootLink } from 'src/routing/links'
-import { getDefaultFloor } from 'src/utils/building'
-import { Search } from 'src/components/search'
+import React, { Component, ReactNode, MouseEvent } from 'react';
+import { User, Building } from 'src/types/api';
+import { goToPage as goToPageAction } from 'src/ducks/app/actions';
+import { buildingLink, rootLink } from 'src/routing/links';
+import { getDefaultFloor } from 'src/utils/building';
+import { Search } from 'src/components/search';
 
 import {
-  MenuBox,
-  Menu,
-  Avatar,
-  MenuItem,
-  MenuItemList,
-  SubItem,
-  Box,
-} from './styles'
+    MenuBox,
+    Menu,
+    Avatar,
+    MenuItem,
+    MenuItemList,
+    SubItem,
+    Box,
+} from './styles';
 
 export type PropsType = {
-  isSelfLoading: boolean
-  isBuildingsLoading: boolean
-  buildings: Array<Building>
-  selfUser: User
-  children: ReactNode
-  isEditing: boolean
-  goToPage: typeof goToPageAction
-}
+    isSelfLoading: boolean;
+    isBuildingsLoading: boolean;
+    buildings: Array<Building>;
+    selfUser: User;
+    children: ReactNode;
+    isEditing: boolean;
+    goToPage: typeof goToPageAction;
+};
 
 export class LayoutView extends Component<PropsType> {
-  state = {
-    isBuildingsListOpen: false,
-  }
+    state = {
+        isBuildingsListOpen: false,
+    };
 
-  handleToggleList = () => {
-    const { isBuildingsListOpen } = this.state
+    handleToggleList = () => {
+        const { isBuildingsListOpen } = this.state;
 
-    this.setState({
-      isBuildingsListOpen: !isBuildingsListOpen,
-    })
-  }
+        this.setState({
+            isBuildingsListOpen: !isBuildingsListOpen,
+        });
+    };
 
-  handleClickMain = () => {
-    const { goToPage } = this.props
+    handleClickMain = () => {
+        const { goToPage } = this.props;
 
-    goToPage(rootLink.get())
-  }
+        goToPage(rootLink.get());
+    };
 
-  handleClickBuilding = (e: MouseEvent<HTMLDivElement>) => {
-    const { goToPage } = this.props
+    handleClickBuilding = (e: MouseEvent<HTMLDivElement>) => {
+        const { goToPage } = this.props;
 
-    goToPage(buildingLink.get(e.currentTarget.dataset))
-  }
+        goToPage(buildingLink.get(e.currentTarget.dataset));
+    };
 
-  render() {
-    const {
-      selfUser,
-      isBuildingsLoading,
-      buildings,
-      children,
-      isEditing,
-    } = this.props
-    const { isBuildingsListOpen } = this.state
+    render() {
+        const {
+            selfUser,
+            isBuildingsLoading,
+            buildings,
+            children,
+            isEditing,
+        } = this.props;
+        const { isBuildingsListOpen } = this.state;
 
-    return (
-      <Box>
-        <MenuBox>
-          <Menu>
-            <MenuItem onClick={this.handleClickMain}>Главная</MenuItem>
-            <MenuItem
-              isDisabled={isBuildingsLoading}
-              onClick={this.handleToggleList}
-            >
-              <span>Список зданий</span>
-              {!isBuildingsLoading && isBuildingsListOpen && !isEditing && (
-                <MenuItemList>
-                  {buildings.map((building) => (
-                    <SubItem
-                      onClick={this.handleClickBuilding}
-                      data-building-id={building.id}
-                      data-floor={getDefaultFloor(building)}
-                      key={building.id}
-                    >
-                      {building.name}
-                    </SubItem>
-                  ))}
-                </MenuItemList>
-              )}
-            </MenuItem>
-            <Search />
-          </Menu>
-          <Avatar url={selfUser ? selfUser.avatarUrl : null} />
-        </MenuBox>
-        {children}
-      </Box>
-    )
-  }
+        return (
+            <Box>
+                <MenuBox>
+                    <Menu>
+                        <MenuItem onClick={this.handleClickMain}>
+                            Главная
+                        </MenuItem>
+                        <MenuItem
+                            isDisabled={isBuildingsLoading}
+                            onClick={this.handleToggleList}
+                        >
+                            <span>Список зданий</span>
+                            {!isBuildingsLoading &&
+                                isBuildingsListOpen &&
+                                !isEditing && (
+                                    <MenuItemList>
+                                        {buildings.map((building) => (
+                                            <SubItem
+                                                onClick={
+                                                    this.handleClickBuilding
+                                                }
+                                                data-building-id={building.id}
+                                                data-floor={getDefaultFloor(
+                                                    building
+                                                )}
+                                                key={building.id}
+                                            >
+                                                {building.name}
+                                            </SubItem>
+                                        ))}
+                                    </MenuItemList>
+                                )}
+                        </MenuItem>
+                        <Search />
+                    </Menu>
+                    <Avatar url={selfUser ? selfUser.avatarUrl : null} />
+                </MenuBox>
+                {children}
+            </Box>
+        );
+    }
 }

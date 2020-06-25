@@ -1,6 +1,6 @@
-import { AppActionType } from './action-types'
+import { AppActionType } from './action-types';
 
 export const goToPage = (url: string) => ({
-  type: AppActionType.GO_TO_PAGE,
-  url,
-})
+    type: AppActionType.GO_TO_PAGE,
+    url,
+});

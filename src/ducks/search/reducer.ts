@@ -1,36 +1,39 @@
-import { InferValueTypes } from 'src/types/common'
-import { SearchActionType } from './action-types'
-import * as actions from './actions'
+import { InferValueTypes } from 'src/types/common';
+import { SearchActionType } from './action-types';
+import * as actions from './actions';
 
-export type ActionTypes = ReturnType<InferValueTypes<typeof actions>>
+export type ActionTypes = ReturnType<InferValueTypes<typeof actions>>;
 
 type StateType = {
-  isLoading: boolean
-}
+    isLoading: boolean;
+};
 
 export const initialState: StateType = {
-  isLoading: false,
-}
+    isLoading: false,
+};
 
-export const self = (state = initialState, action: ActionTypes): StateType => {
-  switch (action.type) {
-    case SearchActionType.SEARCH: {
-      return {
-        ...state,
-        isLoading: true,
-      }
-    }
+export const search = (
+    state = initialState,
+    action: ActionTypes
+): StateType => {
+    switch (action.type) {
+        case SearchActionType.SEARCH: {
+            return {
+                ...state,
+                isLoading: true,
+            };
+        }
 
-    case SearchActionType.SEARCH_SUCCESS:
-    case SearchActionType.SEARCH_FAILED: {
-      return {
-        ...state,
-        isLoading: false,
-      }
-    }
+        case SearchActionType.SEARCH_SUCCESS:
+        case SearchActionType.SEARCH_FAILED: {
+            return {
+                ...state,
+                isLoading: false,
+            };
+        }
 
-    default: {
-      return state
+        default: {
+            return state;
+        }
     }
-  }
-}
+};

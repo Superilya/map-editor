@@ -1,0 +1,5 @@
+export const ObjectsActionType = {
+    GET_OBJECTS: 'GET_OBJECTS',
+    GET_OBJECTS_SUCCESS: 'GET_OBJECTS_SUCCESS',
+    GET_OBJECTS_FAILED: 'GET_OBJECTS_FAILED',
+} as const;

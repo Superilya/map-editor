@@ -1,3 +1,3 @@
-const dataElement = document.getElementById('data')
+const dataElement = document.getElementById('data');
 
-export const CONTEXT_ROOT = dataElement?.dataset.context || '/'
+export const CONTEXT_ROOT = dataElement?.dataset.context || '/';

@@ -1,0 +1,6 @@
+export const PlacesEditinActionType = {
+    SET_PLACE_POSITION: 'SET_PLACE_POSITION',
+    SET_PLACE_ROTATION: 'SET_PLACE_ROTATION',
+    DELETE_PLACE: 'DELETE_PLACE',
+    CREATE_PLACE: 'CREATE_PLACE',
+} as const;

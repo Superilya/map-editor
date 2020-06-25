@@ -1,3 +1,4 @@
 export enum ObjectTypes {
-  PLACE = 2,
+    PLACE = 2,
+    OBJECT = 3,
 }
