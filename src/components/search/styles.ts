@@ -6,14 +6,15 @@ export const StyledWrapper = styled.div`
     }
 
     .react-autosuggest__input {
-        width: 240px;
-        height: 30px;
+        width: 100%;
+        height: 40px;
         padding: 10px 20px;
         font-family: Helvetica, sans-serif;
         font-weight: 300;
         font-size: 16px;
         border: 1px solid #aaa;
         border-radius: 4px;
+        box-sizing: border-box;
     }
 
     .react-autosuggest__input--focused {

@@ -4,7 +4,8 @@ import { Map } from 'src/components/map';
 import { Tool } from 'src/components/tool';
 import { goToPage as goToPageAction } from 'src/ducks/app/actions';
 import { buildingLink } from 'src/routing/links';
-import { Box, FloorsBox, FloorItem } from './styles';
+import { Text } from 'src/components/ui/text';
+import { Box, FloorsBox, FloorItem, FloorInner } from './styles';
 // import { Places } from 'src/components/places';
 
 type PropsType = {
@@ -179,7 +180,9 @@ export class BuildingPageView extends Component<PropsType, StateType> {
                             onClick={this.handleClickFloor}
                             disabled={isEditing}
                         >
-                            {floor}
+                            <FloorInner>
+                                <Text>{floor}</Text>
+                            </FloorInner>
                         </FloorItem>
                     ))}
                 </FloorsBox>

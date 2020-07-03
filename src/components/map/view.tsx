@@ -9,6 +9,8 @@ import { Area } from 'src/components/area';
 import { Objects, Places } from 'src/components/objects';
 import { ObjectTypes } from 'src/constants/objects';
 
+import { skyBlue } from 'src/constants/colors';
+
 type PropsType = {
     width: number;
     height: number;
@@ -144,7 +146,7 @@ export class MapView extends Component<PropsType> {
                                             room={room}
                                             fill={
                                                 selectedRoom === room.id
-                                                    ? '#00FF00'
+                                                    ? skyBlue
                                                     : undefined
                                             }
                                         />

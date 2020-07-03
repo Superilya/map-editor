@@ -5,6 +5,7 @@ import { Place, ObjectType } from 'src/types/api';
 import { Group, Transformer, Rect, Circle } from 'react-konva';
 import { KonvaEventObject } from 'konva/types/Node';
 import Konva from 'konva';
+import { skyBlue } from 'src/constants/colors';
 
 type AvailableObjects = Place & ObjectType;
 
@@ -107,7 +108,7 @@ export class MapObjectView<T extends AvailableObjects> extends Component<
                 >
                     <Group ref={this.shapeRef} rotation={object.rotation}>
                         <Area
-                            fill={isSelected ? '#0000FF' : undefined}
+                            fill={isSelected ? skyBlue : undefined}
                             name={String(object.id)}
                             area={object.area}
                         />

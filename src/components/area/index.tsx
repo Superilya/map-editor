@@ -2,6 +2,7 @@ import React from 'react';
 import { Area as AreaType } from 'src/types/api';
 import { Shape, KonvaNodeEvents, Group, StageProps } from 'react-konva';
 import { AreaKinds, BorderKinds } from 'src/constants/kinds';
+import { lightGrey, darkGrey } from 'src/constants/colors';
 
 const renderArea = (area: AreaType) => (context, shape) => {
     const [first, ...borders] = area.borders;
@@ -48,7 +49,7 @@ const renderPath = (prev, next) => (context, shape) => {
 const getStroke = (kind: BorderKinds) => {
     switch (kind) {
         case BorderKinds.WALL: {
-            return 'black';
+            return darkGrey;
         }
 
         default: {
@@ -75,7 +76,7 @@ const renderBorders = (area: AreaType) => {
                     height={20}
                     sceneFunc={renderPath(prev, next)}
                     stroke={getStroke(next.kind)}
-                    strokeWidth={4}
+                    strokeWidth={5}
                     fillEnabled={false}
                 />
                 // <Line points={[prev.x, prev.y, next.x, next.y]} stroke="black" strokeWidth={4} />
@@ -91,11 +92,11 @@ const renderBorders = (area: AreaType) => {
 const getFill = (kind: AreaKinds) => {
     switch (kind) {
         case AreaKinds.DEFAULT: {
-            return '#e7cbfc';
+            return lightGrey;
         }
 
         case AreaKinds.PLACE: {
-            return '#FF0000';
+            return lightGrey;
         }
 
         default: {
