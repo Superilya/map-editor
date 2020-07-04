@@ -1,62 +1,37 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { middleGrey } from 'src/constants/colors';
+
+export const InputBox = styled.div`
+    margin: 0 17px;
+`;
+
+export const SuggestionsContainer = styled.div``;
+
+type SuggestionPropsType = {
+    highlighted: boolean;
+};
+
+export const Suggestion = styled.div<SuggestionPropsType>`
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    padding: 10px 30px;
+
+    ${({ highlighted }) =>
+        highlighted &&
+        css`
+            background-color: ${middleGrey};
+        `}
+`;
+
+export const SuggestionName = styled.div`
+    margin-left: 20px;
+`;
 
 export const StyledWrapper = styled.div`
-    .react-autosuggest__container {
-        position: relative;
-    }
-
-    .react-autosuggest__input {
-        width: 100%;
-        height: 40px;
-        padding: 10px 20px;
-        font-family: Helvetica, sans-serif;
-        font-weight: 300;
-        font-size: 16px;
-        border: 1px solid #aaa;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    .react-autosuggest__input--focused {
-        outline: none;
-    }
-
-    .react-autosuggest__input--open {
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    .react-autosuggest__suggestions-container {
-        display: none;
-    }
-
-    .react-autosuggest__suggestions-container--open {
-        display: block;
-        position: absolute;
-        top: 51px;
-        width: 280px;
-        border: 1px solid #aaa;
-        background-color: #fff;
-        font-family: Helvetica, sans-serif;
-        font-weight: 300;
-        font-size: 16px;
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
-        z-index: 2;
-    }
-
     .react-autosuggest__suggestions-list {
-        margin: 0;
+        margin-top: 30px;
         padding: 0;
         list-style-type: none;
-    }
-
-    .react-autosuggest__suggestion {
-        cursor: pointer;
-        padding: 10px 20px;
-    }
-
-    .react-autosuggest__suggestion--highlighted {
-        background-color: #ddd;
     }
 `;

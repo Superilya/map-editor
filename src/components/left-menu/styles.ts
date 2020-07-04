@@ -28,14 +28,18 @@ export const Bottom = styled.div`
     align-items: center;
 `;
 
-export const SearchBox = styled.div`
-    background-color: ${skyBlue};
-    padding: 15px 0;
-    border-bottom: 1px solid ${grey};
-`;
+type SearchBoxPropsType = {
+    hide?: boolean;
+};
 
-export const SearchInner = styled.div`
-    margin: 0 17px;
+export const SearchBox = styled.div<SearchBoxPropsType>`
+    ${({ hide }) =>
+        !hide &&
+        css`
+            background-color: ${skyBlue};
+            border-bottom: 1px solid ${grey};
+        `}
+    padding: 15px 0;
 `;
 
 type PropsType = {
@@ -60,29 +64,6 @@ export const BuildingBox = styled.div<PropsType>`
 
         cursor: pointer;
     }
-`;
-
-type AvatarPropsType = {
-    url: string | null;
-};
-
-export const Avatar = styled.div<AvatarPropsType>`
-    height: 40px;
-    width: 40px;
-    background-position: center;
-    background-size: cover;
-    border-radius: 200px;
-    border: 1px solid ${grey};
-    margin-right: 10px;
-
-    ${(props) =>
-        props.url
-            ? css`
-            background-image: url("${props.url}");
-        `
-            : css`
-                  background-color: grey;
-              `}
 `;
 
 export const NameBox = styled.div`

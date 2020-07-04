@@ -6,14 +6,20 @@ import Autosuggest, {
 import { auth } from 'src/utils/auth';
 import { get } from 'src/utils/request';
 import { search as searchActrion } from 'src/ducks/search/actions';
+import { Icon } from 'src/components/ui/icon';
+import { Text } from 'src/components/ui/text';
+import { Input } from 'src/components/ui/input';
 import { Response, UserResponse, User } from 'src/types/api';
 import throttle from 'lodash.throttle';
-import { StyledWrapper } from './styles';
+import { StyledWrapper, Suggestion, SuggestionName, InputBox } from './styles';
 
 type PropsType = {
     isDisabled: boolean;
     search: typeof searchActrion;
+    onFocus: () => void;
+    onBlur: () => void;
 };
+
 type StateType = {
     value: string;
     suggestions: User[];
@@ -41,7 +47,20 @@ const getSuggestionsWithThrottle = throttle(getSuggestions, 1000);
 
 const getSuggestionValue = (suggestion: User): string => suggestion.name;
 
-const renderSuggestion = (suggestion: User) => <div>{suggestion.name}</div>;
+const renderSuggestion = (suggestion: User, { isHighlighted }) => (
+    <Suggestion highlighted={isHighlighted}>
+        <Icon name="fa-user" />
+        <SuggestionName>
+            <Text>{suggestion.name}</Text>
+        </SuggestionName>
+    </Suggestion>
+);
+
+const renderInputComponent = (inputProps) => (
+    <InputBox>
+        <Input {...inputProps} />
+    </InputBox>
+);
 
 export class SearchView extends React.Component<PropsType, StateType> {
     constructor(props: PropsType) {
@@ -60,9 +79,10 @@ export class SearchView extends React.Component<PropsType, StateType> {
     };
 
     handleSelect: OnSuggestionSelected<User> = (e, { suggestion }) => {
-        const { search } = this.props;
+        const { search, onBlur } = this.props;
 
         search(suggestion.id);
+        onBlur();
     };
 
     onSuggestionsFetchRequested = async ({ value }) => {
@@ -78,11 +98,13 @@ export class SearchView extends React.Component<PropsType, StateType> {
     };
 
     render() {
-        const { isDisabled } = this.props;
+        const { isDisabled, onFocus, onBlur } = this.props;
         const { value, suggestions } = this.state;
 
         const inputProps: InputProps<User> = {
-            placeholder: 'Искать',
+            onFocus,
+            onBlur,
+            placeholder: 'Search',
             disabled: isDisabled,
             value,
             onChange: this.onChange,
@@ -102,6 +124,7 @@ export class SearchView extends React.Component<PropsType, StateType> {
                     renderSuggestion={renderSuggestion}
                     inputProps={inputProps}
                     onSuggestionSelected={this.handleSelect}
+                    renderInputComponent={renderInputComponent}
                 />
             </StyledWrapper>
         );

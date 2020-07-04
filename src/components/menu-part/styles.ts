@@ -8,4 +8,8 @@ export const Box = styled.div`
 export const HeaderBox = styled.div`
     padding: 15px 17px;
     border-bottom: 1px solid ${grey};
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 `;

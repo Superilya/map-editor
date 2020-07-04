@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Place, Room } from 'src/types/api';
-import { ToolUserInfo } from 'src/components/tool-user-info';
 import { ToolRoomInfo } from 'src/components/tool-room-info';
 import { changeMyPlace as changeMyPlaceAction } from 'src/ducks/places/actions';
 import { ToolRoomEditing } from 'src/components/tool-room-editing';
@@ -46,7 +45,6 @@ export class ToolView extends Component<PropsType> {
         if (place) {
             return (
                 <>
-                    <ToolUserInfo userId={place.userId} />
                     <button onClick={this.handleClick} type="button">
                         Я теперь сижу тут
                     </button>

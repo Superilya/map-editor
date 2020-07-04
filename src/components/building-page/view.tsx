@@ -1,7 +1,7 @@
 import React, { Component, createRef, RefObject } from 'react';
 import { Building, Place, Room } from 'src/types/api';
 import { Map } from 'src/components/map';
-import { Tool } from 'src/components/tool';
+// import { Tool } from 'src/components/tool';
 import { goToPage as goToPageAction } from 'src/ducks/app/actions';
 import { buildingLink } from 'src/routing/links';
 import { Text } from 'src/components/ui/text';
@@ -170,7 +170,7 @@ export class BuildingPageView extends Component<PropsType, StateType> {
 
         return (
             <Box ref={this.box}>
-                <Tool />
+                {/* <Tool /> */}
                 <FloorsBox>
                     {building.floors.map((floor) => (
                         <FloorItem

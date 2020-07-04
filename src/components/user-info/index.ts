@@ -4,11 +4,11 @@ import { RootStoreType } from 'src/ducks';
 import { ToolUserInfoView } from './view';
 
 type PropsType = {
-    userId?: User['id'];
+    userId: User['id'];
 };
 
 const mapStateToProps = (state: RootStoreType, props: PropsType) => ({
-    user: props.userId ? state.users.entity[props.userId] : null,
+    user: state.users.entity[props.userId],
 });
 
-export const ToolUserInfo = connect(mapStateToProps)(ToolUserInfoView);
+export const UserInfo = connect(mapStateToProps)(ToolUserInfoView);

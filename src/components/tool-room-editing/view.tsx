@@ -180,8 +180,6 @@ export class ToolRoomEditingView extends Component<Props> {
                     return null;
                 }
 
-                console.log('editablePlace.rotation', editablePlace.rotation);
-
                 return (
                     <>
                         <div>типо юзера можно выбрать</div>
@@ -217,8 +215,6 @@ export class ToolRoomEditingView extends Component<Props> {
                 if (!editableObject) {
                     return null;
                 }
-
-                console.log('editableObject.rotation', editableObject.rotation);
 
                 return (
                     <>
