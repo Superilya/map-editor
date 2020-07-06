@@ -1,5 +1,4 @@
 import { ObjectType, Place } from 'src/types/api';
-import { ObjectTypes } from 'src/constants/objects';
 import { defaultObjectFields } from 'src/constants/editing';
 
 export const editableList = <T extends ObjectType | Place>(
@@ -68,7 +67,6 @@ export const editableList = <T extends ObjectType | Place>(
 };
 
 export const editableObject = <T extends ObjectType | Place>(
-    objectType,
     objectId,
     areasMapping,
     entity,
@@ -76,7 +74,7 @@ export const editableObject = <T extends ObjectType | Place>(
     created,
     areasEntity
 ): T | null => {
-    if (objectType !== ObjectTypes.OBJECT || !objectId) {
+    if (!objectId) {
         return null;
     }
 

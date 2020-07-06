@@ -1,10 +1,7 @@
 import { RootStoreType } from 'src/ducks';
 import { createSelector } from 'reselect';
 import { Room } from 'src/types/api';
-import {
-    selectSelectedEditObjectType,
-    selectSelectedEditObjectId,
-} from 'src/ducks/room-editing/selectors';
+import { selectSelectedEditObjectId } from 'src/ducks/room-editing/selectors';
 import { editableList, editableObject } from 'src/utils/common-selectors';
 
 export const selectUpdatedPlaces = (state: RootStoreType) =>
@@ -27,7 +24,6 @@ export const selectEditedPlaces = createSelector(
 );
 
 export const selectEditablePlaceFields = createSelector(
-    selectSelectedEditObjectType,
     selectSelectedEditObjectId,
     (state: RootStoreType) => state.places.areas,
     (state: RootStoreType) => state.places.entity,

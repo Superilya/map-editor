@@ -28,20 +28,6 @@ export const Bottom = styled.div`
     align-items: center;
 `;
 
-type SearchBoxPropsType = {
-    hide?: boolean;
-};
-
-export const SearchBox = styled.div<SearchBoxPropsType>`
-    ${({ hide }) =>
-        !hide &&
-        css`
-            background-color: ${skyBlue};
-            border-bottom: 1px solid ${grey};
-        `}
-    padding: 15px 0;
-`;
-
 type PropsType = {
     active?: boolean;
 };

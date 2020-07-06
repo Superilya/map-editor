@@ -10,11 +10,14 @@ import { buildingLink } from 'src/routing/links';
 import { getDefaultFloor } from 'src/utils/building';
 import { PlaceInfo } from 'src/components/place-info';
 import { RoomInfo } from 'src/components/room-info';
-import { Top, Box, Bottom, NameBox, SearchBox, BuildingBox } from './styles';
+import { MenuTop } from 'src/components/menu-top';
+import { Top, Box, Bottom, NameBox, BuildingBox } from './styles';
+import { ToolRoomEditing } from '../tool-room-editing';
 
 type PropsType = {
     buildings: Building[];
     selectedBuildingId: Building['id'];
+    editableRoomId: Room['id'] | null;
     goToPage: typeof goToPageAction;
     selfUser: User;
     place?: Place;
@@ -48,21 +51,30 @@ export class LeftMenuView extends Component<PropsType> {
         const {
             buildings,
             selectedBuildingId,
+            editableRoomId,
             selfUser,
             place,
             room,
         } = this.props;
         const { isSearchFocus } = this.state;
 
+        if (editableRoomId) {
+            return (
+                <Box>
+                    <ToolRoomEditing />
+                </Box>
+            );
+        }
+
         return (
             <Box>
                 <Top>
-                    <SearchBox hide={isSearchFocus}>
+                    <MenuTop hide={isSearchFocus}>
                         <Search
                             onFocus={this.handleFocusSearch}
                             onBlur={this.handleBlurSearch}
                         />
-                    </SearchBox>
+                    </MenuTop>
                     {!isSearchFocus && (
                         <>
                             {Array.isArray(buildings) &&

@@ -11,6 +11,7 @@ import { Text } from 'src/components/ui/text';
 import { Input } from 'src/components/ui/input';
 import { Response, UserResponse, User } from 'src/types/api';
 import throttle from 'lodash.throttle';
+import { Size } from 'src/constants/ui';
 import { StyledWrapper, Suggestion, SuggestionName, InputBox } from './styles';
 
 type PropsType = {
@@ -108,6 +109,7 @@ export class SearchView extends React.Component<PropsType, StateType> {
             disabled: isDisabled,
             value,
             onChange: this.onChange,
+            size: Size.L,
         };
 
         return (
