@@ -3,10 +3,6 @@ import { grey, darkGrey } from 'src/constants/colors';
 import { getFontSize, getDownSize } from 'src/utils/ui';
 import { Size } from 'src/constants/ui';
 
-type PropsType = {
-    size?: Size;
-};
-
 const getHeight = (size?: Size) => {
     switch (size) {
         case Size.M: {
@@ -53,6 +49,10 @@ const getPaddingLeft = (size?: Size) => {
             return 10;
         }
     }
+};
+
+type PropsType = {
+    size?: Size;
 };
 
 export const InputBox = styled.input<PropsType>`

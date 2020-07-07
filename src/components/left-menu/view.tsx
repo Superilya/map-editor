@@ -61,7 +61,7 @@ export class LeftMenuView extends Component<PropsType> {
         if (editableRoomId) {
             return (
                 <Box>
-                    <ToolRoomEditing />
+                    <ToolRoomEditing roomId={editableRoomId} />
                 </Box>
             );
         }
@@ -98,7 +98,8 @@ export class LeftMenuView extends Component<PropsType> {
                                             </BuildingBox>
                                         ))}
                                     </MenuPart>
-                                )}
+                                )
+                            }
                             {place && <PlaceInfo place={place} />}
                             {room && <RoomInfo room={room} />}
                         </>

@@ -20,6 +20,10 @@ export const entity = (
     switch (action.type) {
         case RoomEditinActionType.EDIT_SUBMIT_SUCCESS:
         case ObjectsActionType.GET_OBJECTS_SUCCESS: {
+            if (!Array.isArray(action.objects)) {
+                return state;
+            }
+
             return action.objects.reduce(
                 (acc, object) => {
                     acc[object.id] = object;

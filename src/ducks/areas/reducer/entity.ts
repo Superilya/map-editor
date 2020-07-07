@@ -1,5 +1,5 @@
 import { InferValueTypes } from 'src/types/common';
-import { Area, ObjectType, Place } from 'src/types/api';
+import { Area, ObjectType, Place, Room } from 'src/types/api';
 import { RoomsActionType } from 'src/ducks/rooms/action-types';
 import { PlacesActionType } from 'src/ducks/places/action-types';
 import { RoomEditinActionType } from 'src/ducks/room-editing/action-types';
@@ -52,8 +52,24 @@ export const entity = (
 
         case RoomEditinActionType.EDIT_SUBMIT_SUCCESS: {
             const targetObjects: Array<
-                ObjectType | Place
-            > = action.objects.concat(action.places);
+                ObjectType | Place | Room
+            > = [];
+
+            if (Array.isArray(action.objects)) {
+                targetObjects.push(...action.objects);
+            }
+
+            if (Array.isArray(action.places)) {
+                targetObjects.push(...action.places);
+            }
+
+            if (Array.isArray(action.rooms)) {
+                targetObjects.push(...action.rooms);
+            }
+
+            if (!targetObjects.length) {
+                return state;
+            }
 
             return targetObjects.reduce(
                 (acc, place) => {

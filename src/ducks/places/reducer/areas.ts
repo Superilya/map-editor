@@ -17,6 +17,10 @@ export const areas = (state = initialState, action: ActionTypes): StateType => {
     switch (action.type) {
         case RoomEditinActionType.EDIT_SUBMIT_SUCCESS:
         case PlacesActionType.GET_PLACES_SUCCESS: {
+            if (!Array.isArray(action.places)) {
+                return state;
+            }
+
             return action.places.reduce(
                 (acc, place) => {
                     acc[place.id] = place.area.id;

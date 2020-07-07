@@ -7,16 +7,22 @@ export const editStart = (roomId: Room['id']) => ({
     roomId,
 });
 
-export const editSubmit = () => ({
+type EditableFields = {
+    label?: string;
+}
+
+export const editSubmit = (fields: EditableFields) => ({
     type: RoomEditinActionType.EDIT_SUBMIT,
+    fields
 });
 
 export const editSubmitSuccess = (
     roomId: Room['id'],
-    places: Array<Place>,
-    objects: Array<ObjectType>,
     deletedPlaces: Array<Place['id']>,
-    deletedObjects: Array<ObjectType['id']>
+    deletedObjects: Array<ObjectType['id']>,
+    places?: Array<Place>,
+    objects?: Array<ObjectType>,
+    rooms?: Array<Room>
 ) => ({
     type: RoomEditinActionType.EDIT_SUBMIT_SUCCESS,
     deletedPlaces,
@@ -24,6 +30,7 @@ export const editSubmitSuccess = (
     roomId,
     places,
     objects,
+    rooms,
 });
 
 export const editSubmitFailed = () => ({

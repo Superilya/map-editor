@@ -12,14 +12,15 @@ import {
 } from 'src/ducks/objects-editing/selectors';
 import { Map } from 'src/constants/urls';
 import { request } from 'src/sagas/request';
-import { Response, PlaceResponse, ObjectResponse } from 'src/types/api';
+import { Response, PlaceResponse, ObjectResponse, RoomsResponse } from 'src/types/api';
 import {
     editSubmitFailed,
     editSubmitSuccess,
+    editSubmit,
 } from 'src/ducks/room-editing/actions';
 import { RootStoreType } from 'src/ducks';
 
-export function* editSubmitWorker() {
+export function* editSubmitWorker({ fields }: ReturnType<typeof editSubmit>) {
     const updatedPlaces: ReturnType<typeof selectUpdatedPlaces> = yield select(
         selectUpdatedPlaces
     );
@@ -60,12 +61,14 @@ export function* editSubmitWorker() {
         const {
             places,
             objects,
-        }: Response<PlaceResponse & ObjectResponse> = yield call(
+            rooms
+        }: Response<Partial<PlaceResponse & ObjectResponse & RoomsResponse>> = yield call(
             request,
             'post',
             {
                 url: Map.ROOM_EDIT(roomId),
                 data: {
+                    fields,
                     places: {
                         update: Object.keys(updatedPlaces)
                             .map(Number)
@@ -116,10 +119,11 @@ export function* editSubmitWorker() {
         yield put(
             editSubmitSuccess(
                 roomId,
+                deletedPlaces,
+                deletedObjects,
                 places,
                 objects,
-                deletedPlaces,
-                deletedObjects
+                rooms
             )
         );
     } catch (e) {

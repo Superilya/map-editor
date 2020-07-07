@@ -27,7 +27,7 @@ export const RoomInfo = ({ room }: PropsType) => {
 
     return (
         <MenuPart
-            title="Room"
+            title={room.label}
             action={
                 <CloseAction onClick={handleClickClose}>
                     <Icon name="fa-times" />

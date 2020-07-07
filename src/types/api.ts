@@ -105,16 +105,7 @@ export type SearchResponse = {
     search: Search[];
 };
 
-type CommonResponses =
-    | UserResponse
-    | BuildingResponse
-    | RoomsResponse
-    | PlaceResponse
-    | AreaResponse
-    | SearchResponse
-    | ObjectResponse;
-
-export type Response<T extends CommonResponses> = T & {
+export type Response<T> = T & {
     status: ServerStatuses;
     errors?: Array<string>;
 };

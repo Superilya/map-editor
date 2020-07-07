@@ -23,6 +23,10 @@ export const list = (state = initialState, action: ActionTypes): StateType => {
         }
 
         case RoomEditinActionType.EDIT_SUBMIT_SUCCESS: {
+            if (!Array.isArray(action.places)) {
+                return state;
+            }
+
             const targetList = action.places.reduce(
                 (acc, place) => {
                     if (acc.indexOf(place.id) === -1) {

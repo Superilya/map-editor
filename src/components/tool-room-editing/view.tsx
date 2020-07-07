@@ -25,7 +25,7 @@ import { getObjectsAreas as getObjectsAreasActions } from 'src/ducks/areas/actio
 
 import { ObjectTypes } from 'src/constants/objects';
 import { uniqueString } from 'src/utils/unique-string';
-import { Place, Area, ObjectType } from 'src/types/api';
+import { Place, Area, ObjectType, Room } from 'src/types/api';
 import { AreaPreview } from 'src/components/area-preview';
 
 import { Size, Theme } from 'src/constants/ui';
@@ -71,9 +71,22 @@ type Props = {
     placesAreas: Array<Area>;
     objectsAreas: Array<Area>;
     isEditSubmitting: boolean;
+    editingRoom?: Room;
 };
 
-export class ToolRoomEditingView extends Component<Props> {
+type State = {
+    label?: string;
+}
+
+export class ToolRoomEditingView extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            label: props.editingRoom?.label
+        }
+    }
+
     componentDidMount() {
         const { getObjectsAreas } = this.props;
 
@@ -82,8 +95,11 @@ export class ToolRoomEditingView extends Component<Props> {
 
     handleClickSubmit = () => {
         const { editSubmit } = this.props;
+        const { label } = this.state;
 
-        editSubmit();
+        editSubmit({
+            label
+        });
     };
 
     handleClickCancel = () => {
@@ -113,6 +129,7 @@ export class ToolRoomEditingView extends Component<Props> {
             }
 
             setPlacePosition(selectedObjectId, x, editablePlace.y);
+
             return;
         }
 
@@ -193,6 +210,12 @@ export class ToolRoomEditingView extends Component<Props> {
 
         createObject(areaId, uniqueString());
     };
+
+    handleChangeLabel = (e: React.FormEvent<HTMLInputElement>) => {
+        this.setState({
+            label: e.currentTarget.value
+        });
+    }
 
     renderFields() {
         const {
@@ -302,12 +325,13 @@ export class ToolRoomEditingView extends Component<Props> {
 
     render() {
         const { isEditSubmitting, placesAreas, objectsAreas } = this.props;
+        const { label } = this.state;
 
         return (
             <>
                 <MenuTop>
                     <OffsetBox>
-                        <Input label="label:" />
+                        <Input label="label:" value={label} onChange={this.handleChangeLabel} />
                     </OffsetBox>
                 </MenuTop>
                 <div>{this.renderFields()}</div>
