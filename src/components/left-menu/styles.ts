@@ -14,6 +14,7 @@ export const Box = styled.div`
     display: flex;
     flex-direction: column;
     box-shadow: 1px 0px 3px ${shadow};
+    overflow: auto;
 `;
 
 export const Top = styled.div`

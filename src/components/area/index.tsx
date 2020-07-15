@@ -12,10 +12,10 @@ const renderArea = (area: AreaType) => (context, shape) => {
 
     borders.reduce((prev, next) => {
         context.bezierCurveTo(
-            typeof next.cp1x === 'number' ? next.cp1x : prev.x,
-            typeof next.cp1y === 'number' ? next.cp1y : prev.y,
-            typeof next.cp2x === 'number' ? next.cp2x : prev.x,
-            typeof next.cp2y === 'number' ? next.cp2y : prev.y,
+            next.cp1x ?? prev.x,
+            next.cp1y ?? prev.y,
+            next.cp2x ?? next.x,
+            next.cp2y ?? next.y,
             next.x,
             next.y
         );
@@ -33,10 +33,10 @@ const renderPath = (prev, next) => (context, shape) => {
     context.moveTo(prev.x, prev.y);
 
     context.bezierCurveTo(
-        next.cp1x || prev.x,
-        next.cp1y || prev.y,
-        next.cp2x || next.x,
-        next.cp2y || next.y,
+        next.cp1x ?? prev.x,
+        next.cp1y ?? prev.y,
+        next.cp2x ?? next.x,
+        next.cp2y ?? next.y,
         next.x,
         next.y
     );

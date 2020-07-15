@@ -79,3 +79,51 @@ export const getDoubleDownSize = (size?: Size): Size => {
         }
     }
 };
+
+export const getHeight = (size?: Size) => {
+    switch (size) {
+        case Size.M: {
+            return 30;
+        }
+
+        case Size.L: {
+            return 40;
+        }
+
+        default: {
+            return 30;
+        }
+    }
+};
+
+export const getPaddingTop = (size?: Size) => {
+    switch (size) {
+        case Size.M: {
+            return 8;
+        }
+
+        case Size.L: {
+            return 10;
+        }
+
+        default: {
+            return 8;
+        }
+    }
+};
+
+export const getPaddingLeft = (size?: Size) => {
+    switch (size) {
+        case Size.M: {
+            return 10;
+        }
+
+        case Size.L: {
+            return 14;
+        }
+
+        default: {
+            return 10;
+        }
+    }
+};

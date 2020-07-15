@@ -51,9 +51,7 @@ export const entity = (
         }
 
         case RoomEditinActionType.EDIT_SUBMIT_SUCCESS: {
-            const targetObjects: Array<
-                ObjectType | Place | Room
-            > = [];
+            const targetObjects: Array<ObjectType | Place | Room> = [];
 
             if (Array.isArray(action.objects)) {
                 targetObjects.push(...action.objects);

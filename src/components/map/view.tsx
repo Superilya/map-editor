@@ -7,6 +7,7 @@ import { KonvaEventObject } from 'konva/types/Node';
 
 import { Area } from 'src/components/area';
 import { Objects, Places } from 'src/components/objects';
+import { AreaEdit } from 'src/components/area-edit';
 import { ObjectTypes } from 'src/constants/objects';
 
 import { skyBlue } from 'src/constants/colors';
@@ -118,6 +119,7 @@ export class MapView extends Component<PropsType> {
             onClickPlace,
             selectedPlace,
             selectedRoom,
+            editableRoomId,
         } = this.props;
 
         if (isRoomsLoading || !width || !height) {
@@ -166,6 +168,9 @@ export class MapView extends Component<PropsType> {
                                         />
                                     </Group>
                                 ))}
+                                {editableRoomId && (
+                                    <AreaEdit roomId={editableRoomId} />
+                                )}
                             </Provider>
                         </Layer>
                     </Stage>

@@ -11,8 +11,8 @@ import { getDefaultFloor } from 'src/utils/building';
 import { PlaceInfo } from 'src/components/place-info';
 import { RoomInfo } from 'src/components/room-info';
 import { MenuTop } from 'src/components/menu-top';
+import { ToolRoomEditing } from 'src/components/tool-room-editing';
 import { Top, Box, Bottom, NameBox, BuildingBox } from './styles';
-import { ToolRoomEditing } from '../tool-room-editing';
 
 type PropsType = {
     buildings: Building[];
@@ -98,8 +98,7 @@ export class LeftMenuView extends Component<PropsType> {
                                             </BuildingBox>
                                         ))}
                                     </MenuPart>
-                                )
-                            }
+                                )}
                             {place && <PlaceInfo place={place} />}
                             {room && <RoomInfo room={room} />}
                         </>

@@ -7,7 +7,8 @@ export const selectRooms = createSelector(
     (state: RootStoreType) => state.rooms.list,
     (state: RootStoreType) => state.rooms.areas,
     (state: RootStoreType) => state.areas.entity,
-    (entity, list, areasMapping, areas): Room[] => {
+    (state: RootStoreType) => state.areas.editedBorders,
+    (entity, list, areasMapping, areas, editedBorders): Room[] => {
         return list.reduce((acc: Room[], id) => {
             const targetArea = areas[areasMapping[id]];
 
@@ -15,10 +16,20 @@ export const selectRooms = createSelector(
                 return acc;
             }
 
-            acc.push({
-                ...entity[id],
-                area: targetArea,
-            });
+            if (editedBorders[targetArea.id]) {
+                acc.push({
+                    ...entity[id],
+                    area: {
+                        ...targetArea,
+                        borders: editedBorders[targetArea.id],
+                    },
+                });
+            } else {
+                acc.push({
+                    ...entity[id],
+                    area: targetArea,
+                });
+            }
 
             return acc;
         }, []);
@@ -34,11 +45,22 @@ export const selectRoomById = createSelector(
     (state: RootStoreType) => state.rooms.entity,
     (state: RootStoreType) => state.rooms.areas,
     (state: RootStoreType) => state.areas.entity,
-    (roomId, entity, areasMapping, areas): Room | undefined => {
+    (state: RootStoreType) => state.areas.editedBorders,
+    (roomId, entity, areasMapping, areas, editedBorders): Room | undefined => {
         const targetArea = areas[areasMapping[roomId]];
 
         if (!targetArea) {
             return undefined;
+        }
+
+        if (editedBorders[targetArea.id]) {
+            return {
+                ...entity[roomId],
+                area: {
+                    ...targetArea,
+                    borders: editedBorders[targetArea.id],
+                },
+            };
         }
 
         return {

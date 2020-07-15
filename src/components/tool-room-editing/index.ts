@@ -3,7 +3,6 @@ import {
     selectIsSubmitting,
     selectSelectedEditObjectType,
     selectSelectedEditObjectId,
-    selectTargetRoom,
 } from 'src/ducks/room-editing/selectors';
 import { selectEditablePlaceFields } from 'src/ducks/places-editing/selectors';
 import { selectEditableObjectFields } from 'src/ducks/objects-editing/selectors';
@@ -25,14 +24,17 @@ import { RootStoreType } from 'src/ducks';
 import {
     selectPlaceAreasList,
     selectObjectsAreasList,
+    selectTargetBorder,
+    selectTargetArea,
 } from 'src/ducks/areas/selectors';
-import { ToolRoomEditingView } from './view';
 import { selectRoomById } from 'src/ducks/rooms/selectors';
+
 import { Room } from 'src/types/api';
+import { ToolRoomEditingView } from './view';
 
 type PropsType = {
     roomId: Room['id'];
-}
+};
 
 const mapStateToProps = (state: RootStoreType, props: PropsType) => ({
     isEditSubmitting: selectIsSubmitting(state),
@@ -42,7 +44,9 @@ const mapStateToProps = (state: RootStoreType, props: PropsType) => ({
     editableObject: selectEditableObjectFields(state),
     placesAreas: selectPlaceAreasList(state),
     objectsAreas: selectObjectsAreasList(state),
-    editingRoom: selectRoomById(state, props)
+    editingRoom: selectRoomById(state, props),
+    targetBorder: selectTargetBorder(state),
+    targetArea: selectTargetArea(state),
 });
 
 export const ToolRoomEditing = connect(mapStateToProps, {

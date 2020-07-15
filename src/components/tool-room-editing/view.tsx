@@ -27,6 +27,7 @@ import { ObjectTypes } from 'src/constants/objects';
 import { uniqueString } from 'src/utils/unique-string';
 import { Place, Area, ObjectType, Room } from 'src/types/api';
 import { AreaPreview } from 'src/components/area-preview';
+import { BorderEdit } from 'src/components/border-edit';
 
 import { Size, Theme } from 'src/constants/ui';
 import {
@@ -76,15 +77,15 @@ type Props = {
 
 type State = {
     label?: string;
-}
+};
 
 export class ToolRoomEditingView extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            label: props.editingRoom?.label
-        }
+            label: props.editingRoom?.label,
+        };
     }
 
     componentDidMount() {
@@ -98,7 +99,7 @@ export class ToolRoomEditingView extends Component<Props, State> {
         const { label } = this.state;
 
         editSubmit({
-            label
+            label,
         });
     };
 
@@ -213,9 +214,9 @@ export class ToolRoomEditingView extends Component<Props, State> {
 
     handleChangeLabel = (e: React.FormEvent<HTMLInputElement>) => {
         this.setState({
-            label: e.currentTarget.value
+            label: e.currentTarget.value,
         });
-    }
+    };
 
     renderFields() {
         const {
@@ -331,10 +332,15 @@ export class ToolRoomEditingView extends Component<Props, State> {
             <>
                 <MenuTop>
                     <OffsetBox>
-                        <Input label="label:" value={label} onChange={this.handleChangeLabel} />
+                        <Input
+                            label="label:"
+                            value={label}
+                            onChange={this.handleChangeLabel}
+                        />
                     </OffsetBox>
                 </MenuTop>
-                <div>{this.renderFields()}</div>
+                {this.renderFields()}
+                <BorderEdit />
                 <MenuPart title="Add Place">
                     <OffsetBox>
                         <ActionsBox>

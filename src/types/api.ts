@@ -31,7 +31,7 @@ export type BuildingResponse = {
 };
 
 export type Border = {
-    id: number;
+    id: number | string;
     x: number;
     y: number;
     cp1x: number | null;

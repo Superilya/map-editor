@@ -6,8 +6,7 @@ import { RoomsActionType } from '../action-types';
 import * as actions from '../actions';
 
 export type ActionTypes = ReturnType<
-    InferValueTypes<typeof actions>
-    | typeof editSubmitSuccess
+    InferValueTypes<typeof actions> | typeof editSubmitSuccess
 >;
 
 type StateType = Record<Room['id'], Omit<Room, 'area'>>;

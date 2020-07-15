@@ -10,7 +10,7 @@ import { Icon } from 'src/components/ui/icon';
 import { Text } from 'src/components/ui/text';
 import { Input } from 'src/components/ui/input';
 import { Response, UserResponse, User } from 'src/types/api';
-import throttle from 'lodash.throttle';
+import { throttle } from 'lodash';
 import { Size } from 'src/constants/ui';
 import { StyledWrapper, Suggestion, SuggestionName, InputBox } from './styles';
 

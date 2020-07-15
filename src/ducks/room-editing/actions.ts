@@ -9,11 +9,11 @@ export const editStart = (roomId: Room['id']) => ({
 
 type EditableFields = {
     label?: string;
-}
+};
 
 export const editSubmit = (fields: EditableFields) => ({
     type: RoomEditinActionType.EDIT_SUBMIT,
-    fields
+    fields,
 });
 
 export const editSubmitSuccess = (
